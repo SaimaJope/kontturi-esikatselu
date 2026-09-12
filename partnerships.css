@@ -1,0 +1,89 @@
+/* Shared utility navigation and partner / careers pages. */
+html{scroll-padding-top:164px}
+@media(max-width:760px){html{scroll-padding-top:134px}}
+.header-utility{border-bottom:1px solid #e8eef2;background:linear-gradient(100deg,#f9fbfc,#f2f7fa)}
+.utility-inner{display:flex;align-items:center;justify-content:flex-end;gap:24px;min-height:40px}
+.utility-navigation{display:flex;gap:24px;margin-right:auto;font-size:11px;color:#526b7c}
+.utility-navigation a{display:inline-flex;align-items:center;min-height:40px}
+.social-links{display:flex;align-items:center;gap:4px;color:#426880}
+.social-links a{display:flex;align-items:center;justify-content:center;width:32px;min-height:40px}
+.social-links svg{flex:none}
+.utility-emergency{display:flex;align-items:center;gap:10px;min-height:40px;padding-left:24px;border-left:1px solid #dae5ed;font-size:12px;line-height:1.4;color:#355b75;white-space:nowrap}.utility-phone-icon{color:#0569b5;stroke-width:1.5}.utility-emergency>span{font-size:11px}
+.utility-emergency strong{font-size:12px;font-weight:500;color:#0569b5;white-space:nowrap}
+
+.site-header{top:-154px}
+.site-header.header-visible,.site-header:focus-within,.site-header:has(.mobile-navigation[open]){top:0}
+.footer-identity .social-links{margin-top:18px;justify-content:flex-start}
+.footer-identity .social-links a{display:flex;margin:0;min-height:44px;width:40px}
+.mobile-navigation[open] nav{max-height:calc(100dvh - 124px)}
+.connection-hero{padding:76px 0 82px;background:radial-gradient(ellipse at 80% 90%,#dcecf480,transparent 64%),linear-gradient(118deg,#fff,#f8fbfc);border-bottom:1px solid #e3ecf2}
+.connection-hero h1,.trainee-heading h1{font-size:clamp(44px,5.8vw,84px);font-weight:400;line-height:1.12;letter-spacing:-.04em;max-width:1100px}
+.connection-lead{font-size:clamp(18px,1.6vw,23px);line-height:1.8;max-width:720px;margin-top:30px;color:#506473}
+.connection-hero .text-link,.connection-hero .button{margin-top:30px}
+.offer-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,8vw,120px)}
+.offer-grid article{border-top:1px solid #b6cad7;padding-top:32px;min-width:0}
+.offer-grid h2{font-size:clamp(27px,3vw,41px);line-height:1.3;letter-spacing:-.03em;font-weight:400}
+.offer-grid article>p:not(.eyebrow){max-width:460px;margin:28px 0;color:#596c79;line-height:1.85}
+.offer-grid .text-link{font-size:14px;gap:20px}
+.connection-heading{display:flex;align-items:start;justify-content:space-between;gap:40px;margin-bottom:64px}
+.connection-heading p{max-width:370px;color:#5d7180;font-size:15px;line-height:1.8}
+.connection-heading h2,.connection-split h2{font-size:clamp(28px,3.2vw,44px);font-weight:400;line-height:1.3;letter-spacing:-.03em}
+.partner-directory{background:linear-gradient(180deg,#f8fbfd 0,#fff 240px,#fff calc(100% - 120px),#f8fbfd 100%)}
+.partner-group+.partner-group{margin-top:56px}
+.partner-group h3{padding-top:24px;border-top:1px solid #cddce6;font-size:14px;line-height:1.7;font-weight:500;color:#385d77}
+.partner-logo-grid{list-style:none;margin:0;padding:16px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 32px}
+.partner-logo-grid li{min-width:0}
+.partner-mark{margin:0;padding:20px 8px 28px;display:flex;flex-direction:column;align-items:center;text-align:center}
+.partner-logo{width:100%;height:112px;display:flex;align-items:center;justify-content:center}
+.partner-logo img{display:block;width:100%;max-width:190px;height:76px;object-fit:contain;object-position:center}
+.partner-mark--pko img{max-width:190px;height:108px}
+.partner-mark--sbl img{height:64px;max-width:64px}
+.partner-mark--mtk img,.partner-mark--iba img,.partner-mark--muisti img{height:84px;max-width:100px}
+.partner-mark--uef img{height:98px;max-width:190px}
+.partner-mark--omasp img{max-width:150px}
+.partner-mark--tieyhdistys img{max-width:180px}
+.partner-mark figcaption{max-width:245px;margin-top:18px;font-size:12px;line-height:1.75;color:#61727e;text-wrap:balance}
+@media(max-width:1000px){.partner-logo-grid{gap:8px 22px}.partner-logo img{max-width:165px}.partner-mark{padding-inline:0}}
+@media(max-width:760px){.partner-logo-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 28px}.partner-group+.partner-group{margin-top:32px}.partner-group h3{padding-top:20px}.partner-mark{padding-block:12px 20px}.partner-logo{height:102px}.partner-logo img{max-width:155px;height:66px}.partner-mark--pko img,.partner-mark--uef img{height:86px}.partner-mark--sbl img{height:60px;max-width:60px}.partner-mark--mtk img,.partner-mark--iba img,.partner-mark--muisti img{height:72px;max-width:84px}.partner-mark figcaption{font-size:11px;line-height:1.7;margin-top:12px}}
+@media(max-width:370px){.partner-logo-grid{gap:8px 20px}.partner-logo img{max-width:120px}.partner-mark figcaption{font-size:10px}}
+.connection-split{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(44px,8vw,120px)}
+.connection-split>div{min-width:0}
+.connection-copy p{line-height:1.9;color:#526775;margin-bottom:24px}
+.connection-split .feature-lead{font-size:clamp(20px,2vw,27px);line-height:1.65;font-weight:400}
+.connection-note{background:linear-gradient(125deg,#f5f9fb,#edf5f9);border-block:1px solid #e1eaf0}
+.connection-note p{line-height:1.85;color:#526775;margin-bottom:24px}
+.benefit-row{display:grid;grid-template-columns:1fr 2fr;gap:70px;padding:42px 0;border-top:1px solid #c4d6e2}
+.benefit-row:first-child{padding-top:0;border:0}
+.benefit-value{font-size:clamp(64px,7vw,92px);line-height:1.2;letter-spacing:-.05em;color:#29617f}
+.benefit-value span{font-size:28px;letter-spacing:-.02em}
+.benefit-value small{display:block;font-size:12px;letter-spacing:0;line-height:1.4;margin-bottom:8px}
+.benefit-row h2{font-size:clamp(23px,2.4vw,32px);font-weight:400;line-height:1.4;margin-bottom:18px}
+.benefit-row p{max-width:720px;font-size:16px;line-height:1.85;color:#526775}
+.business-connection .connection-split{grid-template-columns:1.8fr 1fr;align-items:center}
+.business-connection h1{font-size:clamp(43px,5vw,72px)}
+.annual-fee{border-left:1px solid #c5d8e5;padding:20px 0 20px 48px;color:#36617c}
+.annual-fee>div{font-size:clamp(66px,6.7vw,96px);letter-spacing:-.05em;line-height:1.3;margin-top:20px}
+.annual-fee>div span{font-size:36px}
+.annual-fee p{font-size:13px}
+.annual-fee>span{display:block;margin-top:28px;font-size:12px;line-height:1.8;max-width:230px}
+.trainee-hero{background:var(--surface-graphite);color:#f3f6f8;padding:70px 0 0}
+.trainee-heading{padding-bottom:64px}
+.trainee-heading .eyebrow{color:#9ec9e6}
+.trainee-heading>p:last-child{font-size:20px;line-height:1.8;color:#bfced8;margin-top:30px}
+.trainee-hero figure{margin:0;max-height:480px;overflow:hidden;box-shadow:0 18px 52px -25px #0009}
+.trainee-hero img{width:100%;height:440px;object-fit:cover;object-position:center 43%}
+.trainee-tasks{list-style:none;padding:0;margin:28px 0 32px}
+.trainee-tasks li{padding:16px 0;border-top:1px solid #d3e0e8;color:#41627a;font-size:15px}
+.trainee-apply{background:var(--surface-graphite);color:#f3f6f8}
+.trainee-apply .eyebrow{color:#9ec9e6}
+.trainee-apply .feature-lead{color:#cfdae3;margin-bottom:30px}
+.application-email{display:block;font-size:14px;margin-top:24px;color:#b9cee0;overflow-wrap:anywhere}
+[data-theme="dark"] .header-utility{background:#111920;border-color:#253746}
+[data-theme="dark"] .utility-navigation,[data-theme="dark"] .social-links,[data-theme="dark"] .utility-emergency{color:#bed1df}
+[data-theme="dark"] .utility-emergency strong{color:#9acded}
+[data-theme="dark"] .emergency-period{color:#93aab9}
+@media(max-width:1000px){.utility-inner{gap:16px}.partner-list,.benefit-row{gap:36px}.connection-split{gap:44px}}
+@media(max-width:760px){.site-header{top:-130px}.utility-navigation,.header-utility .social-links{display:none}.utility-inner{justify-content:flex-end;min-height:36px}.utility-emergency{min-height:36px;font-size:11px;gap:9px;padding-left:0;border-left:0}.utility-emergency>span{font-size:10px}.utility-phone-icon{width:12px;height:12px}.utility-emergency strong{font-size:11px}.connection-hero{padding:46px 0 54px}.connection-hero h1,.trainee-heading h1{font-size:clamp(39px,7.3vw,56px)}.connection-lead{font-size:17px;margin-top:24px}.offer-grid,.connection-split,.business-connection .connection-split{grid-template-columns:1fr;gap:40px}.offer-grid article{padding-top:26px}.offer-grid h2{font-size:29px}.offer-grid article>p:not(.eyebrow){margin:20px 0;font-size:15px}.connection-heading{display:block;margin-bottom:36px}.connection-heading p{margin-top:18px}.partner-list{grid-template-columns:1fr;gap:20px;padding:26px 0}.partner-list ul{gap:12px 24px;font-size:13px}.benefit-row{grid-template-columns:1fr;gap:18px;padding:32px 0}.benefit-value{font-size:62px}.benefit-value small{display:inline;margin-right:14px}.benefit-row p{font-size:15px}.connection-split h2{font-size:30px}.connection-split .feature-lead{font-size:21px}.annual-fee{border-left:0;border-top:1px solid #c5d8e5;padding:28px 0 0}.annual-fee>div{font-size:68px;margin-top:8px}.annual-fee>span{max-width:none;margin-top:16px}.trainee-hero{padding-top:46px}.trainee-heading{padding-bottom:40px}.trainee-heading>p:last-child{font-size:17px}.trainee-hero img{height:260px}.trainee-apply .button{font-size:14px}}
+@media(max-width:420px){.partner-list ul{grid-template-columns:1fr}.connection-hero h1 br{display:none}.connection-hero h1{font-size:40px;line-height:1.18}.connection-hero .button{font-size:13px;gap:16px;padding-inline:18px}.utility-emergency{gap:8px}}
+
+[data-theme="dark"] .utility-emergency{border-color:#2b414f}[data-theme="dark"] .utility-phone-icon{color:#9acded}

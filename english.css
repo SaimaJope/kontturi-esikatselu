@@ -1,0 +1,48 @@
+/* English content uses the same typography, surfaces and spacing as Finnish. */
+.english-site .hero-copy{max-width:840px}
+.english-site .hero-lead{max-width:560px}
+.english-site .hero-actions{flex-wrap:wrap}
+.english-site .service-entry h3{max-width:380px}
+.english-all-services{margin-top:52px;border-top:1px solid #c9dbe7}
+.english-all-services>summary{display:flex;align-items:center;justify-content:space-between;gap:24px;list-style:none;min-height:72px;font-size:15px;color:#225c83}
+.english-all-services>summary::-webkit-details-marker{display:none}
+.english-all-services[open] .expand-icon::after{transform:rotate(90deg)}
+.english-practice-list{list-style:none;padding:8px 0 32px;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:0 72px}
+.english-practice-list li{padding:25px 0;border-top:1px solid #d6e3ec;min-width:0}
+.english-practice-list h3{font-size:21px;font-weight:400;line-height:1.4}
+.english-practice-list p{font-size:14px;line-height:1.8;margin-top:12px}
+.english-firm{display:grid;grid-template-columns:1fr 1fr;gap:clamp(48px,8vw,112px);align-items:center}
+.english-firm>div{min-width:0}
+.english-firm .feature-lead{font-size:25px;line-height:1.6;margin:28px 0 22px}
+.english-firm p:not(.eyebrow):not(.feature-lead){font-size:16px;line-height:1.9}
+.english-firm .text-link{margin-top:26px}
+.english-firm figure{box-shadow:var(--shadow-photo);overflow:hidden}
+.english-firm img{width:100%;height:430px;object-fit:cover;object-position:center}
+.english-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
+.english-steps li{border-top:1px solid #bccfdd;padding-top:28px}
+.english-steps h3{font-size:25px;font-weight:400;line-height:1.35;margin-bottom:22px}
+.english-steps p{font-size:16px;line-height:1.85}
+.english-site .office-hours{font-size:13px}
+.english-contact-intro{padding:72px 0 80px;background:linear-gradient(118deg,#fff,#f2f8fb);border-bottom:1px solid #e1ebf1}
+.english-contact-intro h1{font-size:clamp(42px,5.5vw,78px);font-weight:400;line-height:1.12;letter-spacing:-.035em}
+.english-contact-intro p:last-child{max-width:670px;font-size:21px;line-height:1.8;margin-top:30px}
+.english-contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(48px,9vw,140px)}
+.english-contact-grid>div{min-width:0}
+.english-contact-methods>h2{margin-bottom:36px}
+.english-contact-method{padding:28px 0;border-top:1px solid #c7d8e4}
+.english-contact-method>p:first-child{font-size:13px;margin-bottom:12px;color:#566e7e}
+.english-contact-method>a{display:inline-block;font-size:clamp(21px,2.3vw,32px);line-height:1.5;color:#165e8b;padding-block:4px}
+.english-contact-method .english-email{font-size:clamp(15px,1.45vw,21px);overflow-wrap:anywhere}
+.english-contact-method .contact-hours{font-size:13px;margin-top:12px}
+.english-oncall{margin-top:30px;padding:26px 0;border-top:1px solid #c7d8e4}
+.english-oncall .footer-label{margin-bottom:10px}
+.english-oncall a{display:inline-block;font-size:20px;color:#165e8b;min-height:40px}
+.english-oncall p:last-child{font-size:13px}
+.english-contact-next>h2{margin-bottom:32px}
+.english-contact-next ol{list-style:none;padding:0;margin:0}
+.english-contact-next li{padding:24px 0;border-top:1px solid #d5e2eb}
+.english-contact-next h3{font-size:22px;font-weight:400;margin-bottom:14px}
+.english-contact-next li p{font-size:15px;line-height:1.85}
+.english-contact-next>.text-link{margin-top:12px}
+@media(max-width:1000px){.english-firm{gap:40px}.english-firm img{height:370px}.english-steps{gap:32px}.english-steps h3{font-size:23px}}
+@media(max-width:700px){.english-site .hero-context .wrap>p:last-child{display:none}.english-all-services{margin-top:30px}.english-practice-list,.english-firm,.english-steps,.english-contact-grid{grid-template-columns:1fr}.english-practice-list{padding-bottom:12px}.english-all-services>summary{font-size:14px}.english-firm{gap:36px}.english-firm img{height:300px}.english-firm .feature-lead{font-size:23px}.english-steps{gap:32px}.english-steps h3{font-size:24px}.english-contact-intro{padding:44px 0 50px}.english-contact-intro h1{font-size:clamp(37px,9vw,49px)}.english-contact-intro p:last-child{font-size:17px;margin-top:24px}.english-contact-grid{gap:44px}.english-contact-methods>h2{margin-bottom:28px}.english-contact-method>a{font-size:27px}.english-contact-method .english-email{font-size:16px}.english-contact-next>h2{font-size:34px}.english-site .footer-grid{gap:32px}}

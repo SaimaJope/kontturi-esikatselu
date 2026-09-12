@@ -1,0 +1,110 @@
+/* Kontturi-Vaalea.pptx: Montserrat Regular, original palette and light. */
+:root{--ink:#1e1e1e;--muted:#4b5055;--pale:#f4f6f8;--line:#e3e6e9;--brand-soft:#5697d0;--brand-gradient:linear-gradient(118deg,#1479c8 0%,#0569b5 45%,#034b7e 100%)}
+body{font-synthesis:none}
+h1,h2,h3,h4,.hero-copy h1,.editorial-hero h1{font-weight:400}
+h1,h2,h3,.hero-copy h1,.service-hero-copy h1,.profile-copy h1,.editorial-hero h1,.closing h2,.person-caption h3,.service-entry h3,.process-grid h3,.office h3{letter-spacing:-.025em}
+.eyebrow{font-weight:400;letter-spacing:.22em;text-transform:uppercase;font-size:12px;color:#0569b5}
+.hero-copy .eyebrow{font-weight:400;letter-spacing:.22em;font-size:12px}
+.hero-copy h1{font-size:clamp(48px,5.55vw,80px);line-height:1.12;margin-bottom:32px}
+.hero-inner{min-height:clamp(600px,48vw,720px)}
+.hero-copy{padding-block:112px 120px}
+.hero-lead{font-size:19px;line-height:1.85;max-width:565px}
+.home-hero,.closing,.editorial-hero-blue{background:var(--brand-gradient)}
+.home-hero,.closing,.brand-lit{position:relative;isolation:isolate;overflow:clip}
+.brand-lit{background-color:white}
+.people-section,.pale-section,.offices-section{background:#f9fbfc}
+.brand-light{position:absolute;inset:-10% -8%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at center,rgba(86,151,208,.12) 0%,rgba(86,151,208,.04) 40%,rgba(86,151,208,0) 65%);contain:strict}
+.home-hero>.brand-light,.closing>.brand-light,.editorial-hero-blue>.brand-light{background:radial-gradient(ellipse at center,rgba(255,255,255,.14) 0%,rgba(255,255,255,.04) 40%,rgba(255,255,255,0) 65%);inset:-30% -25% -30% 20%;z-index:0;mix-blend-mode:soft-light}
+.home-hero>.wrap,.closing>.wrap,.editorial-hero-blue>.wrap{position:relative;z-index:1}
+.hero-line{display:block;overflow:clip}
+.hero-line>span{display:block}
+.hero-copy>h1{animation:none}
+.hero-line>span{animation:line-arrive 1100ms 100ms var(--ease-out) both}
+.hero-line:nth-child(2)>span{animation-delay:220ms}
+@keyframes line-arrive{from{opacity:0;transform:translateY(105%)}to{opacity:1;transform:translateY(0)}}
+.hero-k{width:860px;right:-118px;opacity:.12;transform-origin:center}
+.person-role{color:#4b5055}
+.service-entry h3{font-size:clamp(26px,2.2vw,32px)}
+.service-entry{border-color:#a7bfd0;position:relative}
+.service-entry::before{content:"";position:absolute;top:-1px;left:0;width:100%;height:1px;background:#0569b5;transform:scaleX(0);transform-origin:left;transition:transform 600ms var(--ease-out)}
+.service-entry:focus-within::before,.service-entry:hover::before{transform:scaleX(1)}
+.person-photo{background:#edf2f6}
+.process-grid li{border-color:#d8dce0}
+.process-grid li::before{background:#0569b5;color:white;font-weight:400;border-radius:0}
+.office h3{font-size:28px}
+.person-caption h3{font-size:22px}
+.closing h2{font-size:clamp(42px,4.6vw,66px)}
+.button{font-weight:500;letter-spacing:.01em}
+.button:hover{box-shadow:0 8px 20px #034b7e0d;transform:translateY(-1px)}
+.button:focus-visible{outline-offset:5px}
+.photo-reveal{clip-path:inset(0 0 100%);transition:clip-path 1100ms var(--ease-out)}
+.photo-reveal.is-visible{clip-path:inset(0)}
+.editorial-hero h1{font-size:clamp(42px,5.55vw,80px)}
+.footer-navigation a{color:#4b5055}
+.footer-navigation a:hover{color:#0569b5}
+.contact-form-area{background:#f4f6f8}
+.site-header:focus-within,.site-header:has(.mobile-navigation[open]){top:0}
+@media(max-width:1120px){.hero-k{right:-230px}.hero-copy{max-width:800px}}
+@media(max-width:900px){.hero-copy{padding-block:92px}.hero-inner{min-height:590px}.hero-copy h1{font-size:58px}.hero-k{right:-340px}}
+@media(max-width:700px){
+ .hero-inner{min-height:0}.hero-copy{padding-block:76px 84px;max-width:100%}
+ .hero-copy h1{font-size:clamp(34px,8.7vw,54px);line-height:1.16;letter-spacing:-.025em}
+ .hero-copy .eyebrow{font-size:10px;letter-spacing:.16em;line-height:1.7;max-width:290px}
+ .hero-lead{font-size:16px;line-height:1.85;max-width:380px}
+ .hero-k{width:620px;right:-375px;opacity:.1}
+ .hero-line>span{animation-duration:850ms}
+ .editorial-hero h1{font-size:42px;letter-spacing:-.025em}
+ .eyebrow{font-size:11px;letter-spacing:.18em}
+ .person-caption h3{font-size:21px}
+ .service-entry h3{font-size:27px}
+ .closing h2{font-size:clamp(38px,10vw,56px)}
+}
+/* Static surface depth: cool daylight, fine edges and contact shadows. */
+:root{
+ --shadow-control:0 1px 2px #032c4814,0 8px 18px -10px #032c4840;
+ --shadow-photo:0 2px 4px #032c4808,0 24px 44px -28px #032c4847;
+ --shadow-panel:0 1px 2px #032c4808,0 24px 64px -36px #032c4830;
+ --surface-pearl:linear-gradient(180deg,#fff 0%,#fdfefe 42%,#f7fafc 100%);
+}
+.services-section,.process-section,.profile-body,.editorial-hero:not(.editorial-hero-blue){background-image:var(--surface-pearl)}
+.site-header{box-shadow:0 1px 0 #034b7e0a,0 6px 22px -12px #032c4838}
+.site-header.header-visible{box-shadow:0 1px 0 #034b7e0a,0 10px 28px -16px #032c4847}
+.home-hero,.closing,.editorial-hero-blue{
+ background-image:radial-gradient(ellipse at 82% 0%,#d7efff45 0%,#a6d9fb14 36%,#a6d9fb00 66%),radial-gradient(ellipse at 100% 100%,#5babdf24 0%,#5babdf00 54%),linear-gradient(180deg,#ffffff08,transparent 40%,#012b451c),var(--brand-gradient);
+ box-shadow:inset 0 1px 0 #ffffff7a,inset 0 2px 18px #c1e5ff0d,inset 0 -1px 0 #012b4533;
+}
+.hero-k,.closing-k{filter:drop-shadow(1px 1px 0 #ffffff38) drop-shadow(-6px 10px 14px #012f4f33)}
+.hero-context{background:linear-gradient(180deg,#fff,#fafcfd);box-shadow:inset 0 1px 0 #fff,0 10px 28px -22px #034b7e38;position:relative;z-index:1}
+.button{background-image:linear-gradient(180deg,#ffffff0d,#012b4508);box-shadow:inset 0 1px 0 #ffffff2e,inset 0 -1px 0 #012b4514,var(--shadow-control)}
+.button:hover{box-shadow:inset 0 1px 0 #ffffff29,0 2px 4px #032c4814,0 12px 24px -12px #032c4852}
+.button-white{background:linear-gradient(180deg,#fff,#f1f6fa);border-color:#fff;box-shadow:inset 0 1px 0 #fff,inset 0 -1px 0 #034b7e12,0 2px 4px #012b4514,0 12px 28px -12px #012b4566}
+.button-white:hover{background:linear-gradient(180deg,#fff,#e7f1f8);border-color:#fff;box-shadow:inset 0 1px 0 #fff,0 3px 6px #012b451a,0 16px 32px -14px #012b4570}
+.button-secondary{background:transparent;box-shadow:inset 0 0 0 1px #ffffff0a}
+.button:active{box-shadow:inset 0 2px 5px #012b451a}
+.button:disabled{box-shadow:none}
+.people-section,.pale-section,.offices-section{
+ background:radial-gradient(ellipse at 12% 8%,#fff 0%,#ffffff00 58%),radial-gradient(ellipse at 92% 92%,#b9d7ed33 0%,#b9d7ed00 55%),linear-gradient(120deg,#f7fafc,#edf4f8);
+ box-shadow:inset 0 1px 0 #e5edf2,inset 0 2px 0 #ffffffcc,inset 0 -1px 0 #e4ecf1;
+}
+.person-photo,.service-portrait,.profile-portrait{
+ background:radial-gradient(ellipse at 28% 12%,#fff 0%,#ffffffcc 22%,#ffffff00 68%),linear-gradient(135deg,#f6fafc 0%,#e7f1f7 52%,#cbdeea 100%);
+ box-shadow:0 0 72px -26px #91bed94d,var(--shadow-photo);
+}
+.person-photo::after,.service-portrait::after,.profile-portrait::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ box-shadow:inset 0 0 0 1px #034b7e0d,inset 1px 1px 0 #fffffff2,inset 0 14px 24px -20px #fff;
+}
+.process-photo,.editorial-photo,.editorial-story figure{box-shadow:0 1px 3px #032c4814,0 24px 52px -26px #032c4852;outline:1px solid #034b7e0d;outline-offset:-1px}
+.people-arrows button:not(:disabled){background:#fff;color:var(--blue);box-shadow:var(--shadow-control);border-color:#ccdce7}
+.contact-form-area{background:radial-gradient(ellipse at 0% 0%,#fff 0%,#ffffff00 68%),linear-gradient(135deg,#fff,#edf5fa);border:1px solid #e1eaf0;box-shadow:inset 0 1px 0 #fff,0 0 80px -32px #9fc7e140,var(--shadow-panel)}
+.field :is(input,select,textarea){background-color:#fff;box-shadow:inset 0 1px 3px #032c480a,0 1px 0 #ffffffcc}
+.field :is(input,select,textarea):focus{outline:2px solid #0569b5;outline-offset:0;box-shadow:0 0 0 5px #0569b514,inset 0 1px 2px #032c4805}
+.mobile-navigation>nav{background:linear-gradient(150deg,#fff,#f7fafc);box-shadow:0 1px 0 #034b7e0a,0 20px 36px -20px #032c4852}
+.site-footer{background:linear-gradient(180deg,#fafcfd,#fff 180px);box-shadow:inset 0 1px 0 #e5edf2}
+@media(max-width:700px){
+ .person-photo,.service-portrait,.profile-portrait{box-shadow:0 1px 3px #032c4808,0 16px 30px -22px #032c4847}
+ .contact-form-area{border-inline:0;box-shadow:inset 0 1px 0 #e1eaf0,inset 0 -1px 0 #e1eaf0}
+}
+@media print{.site-header,.home-hero,.closing,.editorial-hero-blue,.hero-context,.person-photo,.service-portrait,.profile-portrait,.process-photo,.editorial-photo,.editorial-story figure,.people-section,.pale-section,.offices-section,.site-footer{box-shadow:none}.hero-k,.closing-k{filter:none}}
+@media(prefers-reduced-motion:reduce){.hero-line>span{animation:none}.photo-reveal{clip-path:none;transition:none}.brand-light,.hero-k,.closing-k{translate:none!important}}
+@media print{.brand-light{display:none}.hero-line>span{animation:none}.photo-reveal{clip-path:none}}
