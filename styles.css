@@ -294,7 +294,7 @@ form fieldset{border:0;padding:0;margin:0;min-width:0}
 .contact-offices{padding-block:64px}
 .contact-offices .section-heading{margin-bottom:32px}
 /* 7. Responsive composition */
-@media(max-width:1000px){
+@media(max-width:1120px){
 .desktop-nav{display:none}
 .mobile-navigation{display:block}
 .mobile-navigation>summary{display:flex;align-items:center;gap:12px;list-style:none;font-size:14px;font-weight:500;min-height:44px}

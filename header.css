@@ -1,0 +1,61 @@
+/* Shared header: reference layout, original logo and existing social links. */
+html { scroll-padding-top: 144px; }
+/* Keep the native scrollbar thumb below the dark utility bar. */
+html { --utility-bar-height: 36px; }
+::-webkit-scrollbar { background: #1e1e1e; }
+::-webkit-scrollbar-track { margin-top: var(--utility-bar-height); }
+.site-header { top: -126px; }
+.site-header .header-utility { background: #1e1e1e; border-bottom: 0; }
+.site-header .utility-inner { min-height: 36px; gap: 16px; }
+.site-header .utility-navigation { color: #fff; font-size: 12px; gap: 24px; }
+.site-header .utility-navigation a { min-height: 36px; }
+.site-header .social-links { color: #fff; }
+.site-header .social-links a { min-height: 36px; }
+.site-header .utility-emergency {
+  min-height: 36px;
+  color: #fff;
+  padding-left: 16px;
+  border-color: #ffffff40;
+  gap: 8px;
+}
+.site-header .utility-emergency > span { font-size: 12px; }
+.site-header .utility-emergency strong,
+.site-header .utility-phone-icon { color: #fff; }
+.site-header .utility-period { opacity: .8; }
+.site-header .header-inner { min-height: 88px; gap: 24px; }
+.site-header .brand { width: 260px; }
+.site-header .desktop-nav { gap: 24px; }
+.site-header .desktop-nav .nav-contact {
+  min-height: 48px;
+  justify-content: center;
+  margin: 0;
+  padding: 12px 24px;
+  border: 0;
+  background: #0569b5;
+  color: #fff;
+  font-weight: 500;
+}
+.site-header .nav-contact .link-arrow { display: none; }
+.site-header .desktop-nav .nav-contact:hover { box-shadow: inset 0 0 0 2px #ffffff80; }
+.site-header .header-utility a:focus-visible { outline-color: #fff; }
+@media (max-width: 1120px) {
+  .site-header .desktop-nav { display: none; }
+  .site-header .mobile-navigation { display: block; }
+  .site-header .utility-period { display: none; }
+}
+@media (max-width: 760px) {
+  html { scroll-padding-top: 136px; --utility-bar-height: 40px; }
+  .site-header { top: -122px; }
+  .site-header .header-inner { min-height: 80px; gap: 16px; }
+  .site-header .brand { width: min(248px, calc(100vw - 160px)); min-width: 0; }
+  .site-header .utility-inner { min-height: 40px; gap: 8px; }
+  .site-header .utility-navigation { display: none; }
+  .site-header .header-utility .social-links { display: flex; gap: 0; margin-right: auto; }
+  .site-header .social-links a { min-height: 40px; width: 32px; }
+  .site-header .utility-emergency { min-height: 40px; padding-left: 0; border-left: 0; }
+  .site-header .utility-emergency > span { font-size: 11px; }
+  .site-header .mobile-navigation[open] nav { max-height: calc(100dvh - 120px); }
+}
+@media (max-width: 420px) {
+  .site-header .utility-emergency > span { display: none; }
+}

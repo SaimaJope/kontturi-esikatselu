@@ -15,6 +15,14 @@
 .hero-copy .eyebrow,.closing .eyebrow,.editorial-hero-blue .eyebrow,.service-hero-surface .eyebrow { color:var(--graphite-accent); }
 .hero-lead,.closing-action>p,.editorial-hero-blue .page-lead,.service-hero-surface .body-copy { color:var(--graphite-muted); }
 .hero-k,.closing-k { opacity:.52; filter:none; animation:none; }
+.closing { background:#0569b5; color:#fff; box-shadow:none; }
+.closing h2 { font-weight:500; }
+.closing .eyebrow,.closing .closing-action>p { color:#fff; }
+.closing .closing-k { opacity:.08; filter:none; }
+.closing>.brand-light { display:none; }
+.closing .button-white { color:#0569b5; background:#fff; border-color:#fff; box-shadow:none; }
+.closing .button-white:hover { background:#f4f8fb; }
+.closing a:focus-visible { outline-color:#fff; }
 .home-hero>.brand-light,.closing>.brand-light,.editorial-hero-blue>.brand-light {
   background:radial-gradient(ellipse at center,#2b7fc418,transparent 67%);mix-blend-mode:normal;
 }
