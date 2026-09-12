@@ -1,0 +1,30 @@
+/* Brand book 2026, pp. 5, 11, 13 and 24: blue cover, white K, Montserrat 500/400. */
+.home-hero {
+  background: #0569b5;
+  color: #fff;
+  box-shadow: none;
+}
+.home-hero > .brand-light { display: none; }
+.home-hero .hero-inner { min-height: 0; }
+.home-hero .hero-copy { padding-bottom: clamp(40px, 4.5vw, 64px); }
+.home-hero .hero-copy h1,
+.home-hero .hero-copy .eyebrow { font-weight: 500; }
+.home-hero .hero-copy .eyebrow { color: #fff; }
+.home-hero .hero-lead { color: #fff; font-weight: 400; }
+.home-hero .hero-actions .text-link { color: #fff; }
+.home-hero .hero-k { opacity: .08; filter: none; }
+.home-hero .button-white {
+  color: #0569b5;
+  background: #fff;
+  border-color: #fff;
+  box-shadow: none;
+}
+.home-hero .button-white:hover { background: #f4f8fb; }
+body[data-page="home"] .services-section { padding-top: clamp(40px, 5vw, 64px); }
+body[data-page="home"] .services-section .section-heading { margin-bottom: clamp(28px, 3.5vw, 40px); }
+@media print {
+  .home-hero { color: #1e1e1e; background: #fff; }
+  .home-hero .hero-copy .eyebrow,
+  .home-hero .hero-lead,
+  .home-hero .hero-actions .text-link { color: #1e1e1e; }
+}
