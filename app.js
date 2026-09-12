@@ -73,8 +73,7 @@ if (peopleCards) {
   const previous = controls.querySelector('.people-previous');
   const next = controls.querySelector('.people-next');
   const range = document.querySelector('#people-range');
-  const mobile = matchMedia('(max-width: 700px)');
-  const pageSize = () => mobile.matches ? 1 : 3;
+  const pageSize = () => 3;
   const remembered = Number.isInteger(history.state?.peopleStart) ? history.state.peopleStart : 0;
   let start = Math.floor(Math.max(0, Math.min(remembered, cards.length - 1)) / pageSize()) * pageSize();
   function showPeople() {
@@ -96,10 +95,6 @@ if (peopleCards) {
   }
   previous.addEventListener('click', () => move(-1));
   next.addEventListener('click', () => move(1));
-  mobile.addEventListener('change', () => {
-    start = Math.floor(start / pageSize()) * pageSize();
-    showPeople();
-  });
   controls.hidden = false;
   showPeople();
 }
