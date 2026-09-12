@@ -1,5 +1,5 @@
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-const capture = new URLSearchParams(location.search).has('design-capture') || document.body.dataset.motion === 'quiet';
+const capture = new URLSearchParams(location.search).has('design-capture');
 const header = document.querySelector('.site-header');
 let previousY = scrollY;
 let scheduled = false;

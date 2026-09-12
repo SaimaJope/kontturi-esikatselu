@@ -17,12 +17,6 @@ html { scrollbar-color:#3e8fcc #0c0f13; }
 ::-webkit-scrollbar-track { background:#0c0f13; }
 ::-webkit-scrollbar-thumb { background:#3e8fcc; }
 body { background:#0c0f13; }
-.hero-team { background:#075d9a; }
-.service-entry,.office { background:#131d26; }
-.home-reading { background:#0c0f13; }
-.desktop-nav .nav-contact { background:#0569b5; }
-.hero-copy .hero-lead { color:var(--muted); }
-.hero-team .text-link,.hero-team .hero-team-note { color:white; }
 ::selection { background:#2b7fc4; color:white; }
 a:hover { color:#b6ddf8; }
 .eyebrow { color:var(--blue); }
