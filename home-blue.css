@@ -1,12 +1,12 @@
-/* Brand book 2026, pp. 5, 11 and 13: white surface, blue K, Montserrat 500/400. */
+/* Brand book 2026, pp. 5, 11 and 13: blue surface, white K, Montserrat 500/400. */
 body[data-page="home"] {
   --home-section-space: 64px;
   --home-column-gap: 32px;
   --home-heading-space: 32px;
 }
 .home-hero {
-  background: #fff;
-  color: #1e1e1e;
+  background: #0569b5;
+  color: #fff;
   box-shadow: none;
 }
 .home-hero > .brand-light { display: none; }
@@ -15,18 +15,18 @@ body[data-page="home"] {
 .home-hero .hero-copy h1,
 .home-hero .hero-copy .eyebrow { font-weight: 500; }
 .home-hero .hero-copy h1 { font-size: clamp(36px, 5.1vw, 72px); }
-.home-hero .hero-copy .eyebrow { color: #0569b5; }
-.home-hero .hero-lead { max-width: 680px; color: #1e1e1e; font-weight: 400; }
-.home-hero .hero-actions .text-link { color: #0569b5; }
-.home-hero .hero-k { opacity: .06; filter: none; }
-.home-hero a:focus-visible { outline-color: #0569b5; }
+.home-hero .hero-copy .eyebrow { color: #fff; }
+.home-hero .hero-lead { max-width: 680px; color: #fff; font-weight: 400; }
+.home-hero .hero-actions .text-link { color: #fff; }
+.home-hero .hero-k { opacity: .08; filter: none; }
+.home-hero a:focus-visible { outline-color: #fff; }
 .home-hero .button-white {
-  color: #fff;
-  background: #0569b5;
-  border-color: #0569b5;
+  color: #0569b5;
+  background: #fff;
+  border-color: #fff;
   box-shadow: none;
 }
-.home-hero .button-white:hover { background: #0569b5; box-shadow: inset 0 0 0 2px #ffffff80; }
+.home-hero .button-white:hover { color: #034b7e; background: #f4f8fb; box-shadow: none; }
 /* One spacing scale and shared columns for the complete home page. */
 body[data-page="home"] #main > .section { padding-block: var(--home-section-space); }
 body[data-page="home"] .hero-context > .wrap { min-height: 64px; padding-block: 12px; }
