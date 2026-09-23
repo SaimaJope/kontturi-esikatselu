@@ -1,25 +1,57 @@
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const capture = new URLSearchParams(location.search).has('design-capture');
-// The office photograph is a preview treatment until dedicated footage is supplied.
-// Never start continuous motion without a working pause control.
+// The poster remains visible until video playback succeeds. Load no video for
+// reduced motion, design captures or visitors without JavaScript.
 const heroMedia = document.querySelector('.hero-media');
+const heroVideo = heroMedia?.querySelector('video');
 const heroMotionToggle = heroMedia?.querySelector('.hero-motion-toggle');
-if (heroMotionToggle) {
+if (heroVideo && heroMotionToggle) {
   const english = document.documentElement.lang === 'en';
-  let paused = false;
-  const updateHeroMotion = () => {
-    const enabled = !reduced.matches && !capture;
-    heroMotionToggle.hidden = !enabled;
-    heroMedia.classList.toggle('is-animated', enabled);
-    heroMedia.classList.toggle('is-paused', paused || document.hidden);
+  let userPaused = false;
+  let failed = false;
+  let playRequest = 0;
+  const updateControl = () => {
+    heroMotionToggle.hidden = reduced.matches || capture || failed;
     heroMotionToggle.textContent = english
-      ? (paused ? 'Resume image motion' : 'Pause image motion')
-      : (paused ? 'Jatka kuvan liikettä' : 'Pysäytä kuvan liike');
+      ? (heroVideo.paused ? 'Play background video' : 'Pause background video')
+      : (heroVideo.paused ? 'Toista taustavideo' : 'Pysäytä taustavideo');
+  };
+  const updateHeroMotion = () => {
+    const request = ++playRequest;
+    const staticOnly = reduced.matches || capture || failed;
+    if (staticOnly || userPaused || document.hidden) {
+      heroVideo.pause();
+      if (staticOnly) heroMedia.classList.remove('is-playing');
+      updateControl();
+      return;
+    }
+    if (!heroVideo.getAttribute('src')) heroVideo.src = heroVideo.dataset.src;
+    heroVideo.muted = true;
+    heroVideo.play().catch(error => {
+      if (request !== playRequest) return;
+      heroVideo.pause();
+      heroMedia.classList.remove('is-playing');
+      // Autoplay restrictions still allow an explicit press of the play button.
+      if (error.name === 'NotAllowedError') userPaused = true;
+      else failed = true;
+      updateControl();
+    });
+    updateControl();
   };
   heroMotionToggle.addEventListener('click', () => {
-    paused = !paused;
+    userPaused = !heroVideo.paused;
     updateHeroMotion();
   });
+  heroVideo.addEventListener('playing', () => {
+    if (reduced.matches || capture || failed || userPaused || document.hidden) {
+      updateHeroMotion();
+      return;
+    }
+    heroMedia.classList.add('is-playing');
+    updateControl();
+  });
+  heroVideo.addEventListener('pause', updateControl);
+  heroVideo.addEventListener('error', () => { failed = true; updateHeroMotion(); });
   reduced.addEventListener('change', updateHeroMotion);
   document.addEventListener('visibilitychange', updateHeroMotion);
   updateHeroMotion();
