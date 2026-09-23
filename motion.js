@@ -61,6 +61,49 @@ let previousY = scrollY;
 let scheduled = false;
 
 if (header) {
+  const root = document.documentElement;
+  const utility = header.querySelector('.header-utility');
+  let scrollbarFrame = 0;
+  let headerMoving = false;
+  let lastHeaderBottom = -1;
+  let lastUtilityBottom = -1;
+  const updateScrollbar = () => {
+    scrollbarFrame = 0;
+    const bottom = Math.max(0, Math.ceil(header.getBoundingClientRect().bottom));
+    const utilityBottom = Math.min(bottom, Math.max(0, Math.ceil(utility?.getBoundingClientRect().bottom || 0)));
+    if (bottom !== lastHeaderBottom) {
+      root.style.setProperty('--scrollbar-header-bottom', `${bottom}px`);
+      lastHeaderBottom = bottom;
+    }
+    if (utilityBottom !== lastUtilityBottom) {
+      root.style.setProperty('--scrollbar-utility-bottom', `${utilityBottom}px`);
+      lastUtilityBottom = utilityBottom;
+    }
+    if (headerMoving) scheduleScrollbar();
+  };
+  const scheduleScrollbar = () => {
+    if (!scrollbarFrame) scrollbarFrame = requestAnimationFrame(updateScrollbar);
+  };
+  // Follow the header only while it moves, including keyboard focus and menu opening.
+  header.addEventListener('transitionrun', event => {
+    if (event.target !== header || event.propertyName !== 'top') return;
+    headerMoving = true;
+    scheduleScrollbar();
+  });
+  for (const type of ['transitionend', 'transitioncancel']) {
+    header.addEventListener(type, event => {
+      if (event.target !== header || event.propertyName !== 'top') return;
+      headerMoving = false;
+      scheduleScrollbar();
+    });
+  }
+  header.addEventListener('focusin', scheduleScrollbar);
+  header.addEventListener('focusout', scheduleScrollbar);
+  addEventListener('resize', scheduleScrollbar);
+  addEventListener('pageshow', scheduleScrollbar);
+  if ('ResizeObserver' in window) new ResizeObserver(scheduleScrollbar).observe(header);
+  updateScrollbar();
+
   addEventListener('scroll', () => {
     if (scheduled) return;
     scheduled = true;
@@ -69,6 +112,7 @@ if (header) {
       header.classList.toggle('header-visible', y > 180 && y < previousY);
       previousY = y;
       scheduled = false;
+      scheduleScrollbar();
     });
   }, { passive: true });
 }

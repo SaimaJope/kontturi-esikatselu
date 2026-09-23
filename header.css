@@ -1,9 +1,26 @@
 /* Shared header: reference layout, original logo and existing social links. */
 html { scroll-padding-top: 144px; }
-/* Keep the native scrollbar thumb below the dark utility bar. */
-html { --utility-bar-height: 36px; }
-::-webkit-scrollbar { background: #1e1e1e; }
-::-webkit-scrollbar-track { margin-top: var(--utility-bar-height); }
+/* The document scrollbar follows the visible header; nested scrollbars stay native. */
+html {
+  --scrollbar-header-bottom: 0px;
+  --scrollbar-utility-bottom: 0px;
+  --scrollbar-header-color: #fff;
+  --scrollbar-track-color: #e8e8e8;
+}
+@supports selector(::-webkit-scrollbar) {
+  html[data-theme="dark"] {
+    scrollbar-color: auto;
+    --scrollbar-header-color: #0b0f13;
+    --scrollbar-track-color: #0c0f13;
+  }
+  html::-webkit-scrollbar, body::-webkit-scrollbar {
+    background: linear-gradient(to bottom,
+      #1e1e1e 0 var(--scrollbar-utility-bottom),
+      var(--scrollbar-header-color) var(--scrollbar-utility-bottom) var(--scrollbar-header-bottom),
+      var(--scrollbar-track-color) var(--scrollbar-header-bottom) 100%);
+  }
+  html::-webkit-scrollbar-track, body::-webkit-scrollbar-track { margin-top: var(--scrollbar-header-bottom); }
+}
 .site-header { top: -126px; }
 .site-header .header-utility { background: #1e1e1e; border-bottom: 0; }
 .site-header .utility-inner { min-height: 36px; gap: 16px; }
@@ -44,7 +61,7 @@ html { --utility-bar-height: 36px; }
   .site-header .utility-period { display: none; }
 }
 @media (max-width: 760px) {
-  html { scroll-padding-top: 136px; --utility-bar-height: 40px; }
+  html { scroll-padding-top: 136px; }
   .site-header { top: -122px; }
   .site-header .header-inner { min-height: 80px; gap: 16px; }
   .site-header .brand { width: min(248px, calc(100vw - 160px)); min-width: 0; }
