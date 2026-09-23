@@ -53,7 +53,7 @@ h1,h2,h3,.hero-copy h1,.service-hero-copy h1,.profile-copy h1,.editorial-hero h1
  .hero-lead{font-size:16px;line-height:1.85;max-width:380px}
  .hero-k{width:620px;right:-375px;opacity:.1}
  .hero-line>span{animation-duration:850ms}
- .editorial-hero h1{font-size:42px;letter-spacing:-.025em}
+ .editorial-hero h1{font-size:clamp(32px,9vw,42px);letter-spacing:-.025em}
  .eyebrow{font-size:11px;letter-spacing:.18em}
  .person-caption h3{font-size:21px}
  .service-entry h3{font-size:27px}
