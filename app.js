@@ -63,7 +63,7 @@ if (menu) {
     if (event.key === 'Escape' && menu.open) { menu.open = false; menu.querySelector('summary').focus(); }
   });
   document.addEventListener('click', event => { if (menu.open && !menu.contains(event.target)) menu.open = false; });
-  matchMedia('(min-width: 1001px)').addEventListener('change', event => { if (event.matches) menu.open = false; });
+  matchMedia('(min-width: 1121px)').addEventListener('change', event => { if (event.matches) menu.open = false; });
 }
 const search = document.querySelector('#person-search');
 const peopleCards = document.querySelector('#people-cards');

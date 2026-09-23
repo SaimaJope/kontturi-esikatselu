@@ -1,5 +1,29 @@
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 const capture = new URLSearchParams(location.search).has('design-capture');
+// The office photograph is a preview treatment until dedicated footage is supplied.
+// Never start continuous motion without a working pause control.
+const heroMedia = document.querySelector('.hero-media');
+const heroMotionToggle = heroMedia?.querySelector('.hero-motion-toggle');
+if (heroMotionToggle) {
+  const english = document.documentElement.lang === 'en';
+  let paused = false;
+  const updateHeroMotion = () => {
+    const enabled = !reduced.matches && !capture;
+    heroMotionToggle.hidden = !enabled;
+    heroMedia.classList.toggle('is-animated', enabled);
+    heroMedia.classList.toggle('is-paused', paused || document.hidden);
+    heroMotionToggle.textContent = english
+      ? (paused ? 'Resume image motion' : 'Pause image motion')
+      : (paused ? 'Jatka kuvan liikettä' : 'Pysäytä kuvan liike');
+  };
+  heroMotionToggle.addEventListener('click', () => {
+    paused = !paused;
+    updateHeroMotion();
+  });
+  reduced.addEventListener('change', updateHeroMotion);
+  document.addEventListener('visibilitychange', updateHeroMotion);
+  updateHeroMotion();
+}
 const header = document.querySelector('.site-header');
 let previousY = scrollY;
 let scheduled = false;

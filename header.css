@@ -24,7 +24,7 @@ html { --utility-bar-height: 36px; }
 .site-header .utility-period { opacity: .8; }
 .site-header .header-inner { min-height: 88px; gap: 24px; }
 .site-header .brand { width: 260px; }
-.site-header .desktop-nav { gap: 24px; }
+.site-header .desktop-nav { gap: clamp(16px, 1.65vw, 24px); font-size: 13px; }
 .site-header .desktop-nav .nav-contact {
   min-height: 48px;
   justify-content: center;
