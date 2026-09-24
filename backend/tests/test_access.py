@@ -73,6 +73,15 @@ class AnonymousAccessTests(TestCase):
         response = self.client.get(reverse("two_factor:login"), HTTP_HOST="attacker.invalid")
         self.assertEqual(response.status_code, 400)
 
+    def test_existing_partner_gif_is_served_as_a_trusted_source_asset(self):
+        response = self.client.get("/assets/partners/tieyhdistys.gif")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "image/gif")
+        self.assertTrue(b"".join(response.streaming_content).startswith((b"GIF87a", b"GIF89a")))
+        response.close()
+        # Trusted source assets do not extend the editor's image upload types.
+        self.assertNotIn("gif", settings.WAGTAILIMAGES_EXTENSIONS)
+
     def test_local_demo_rejects_nonloopback_connections_and_forged_proxy_headers(self):
         with override_settings(LOCAL_DEMO=True):
             response = self.client.get(

@@ -148,6 +148,49 @@ class UploadSecurityTests(TestCase):
                 with uploaded.file.open("rb") as stored:
                     self.assertEqual(stored.read(), original_bytes)
 
+    def test_editor_can_browse_imported_images_but_cannot_replace_or_delete_them(self):
+        original_bytes = self.png_bytes()
+        self.assertEqual(self.upload("imported.png", original_bytes).status_code, 302)
+        imported = get_image_model().objects.get(title="Security upload test")
+        Page.get_first_root_node().add_child(
+            instance=LegacyPage(title="Library home", slug="library-home", source_file="index.html")
+        )
+        call_command("setup_roles", stdout=StringIO())
+        self.user = get_user_model().objects.create_user(
+            username="library-editor", password="Library-test-password-17!"
+        )
+        self.user.groups.add(Group.objects.get(name="Sisällöntuottajat"))
+        self.device = TOTPDevice.objects.create(user=self.user, name="default", confirmed=True)
+        self.verify_client(self.client)
+
+        self.assertContains(self.client.get(reverse("wagtailimages:index")), imported.title)
+        self.assertContains(self.client.get(reverse("wagtailimages_chooser:choose")), imported.title)
+        self.assertEqual(
+            self.client.post(reverse("wagtailimages:edit", args=[imported.pk]), {
+                "title": "Helpful image title", "collection": imported.collection_id,
+            }).status_code,
+            302,
+        )
+        response = self.client.post(reverse("wagtailimages:edit", args=[imported.pk]), {
+            "title": "Helpful image title", "collection": imported.collection_id,
+            "file": SimpleUploadedFile("replacement.png", original_bytes, content_type="image/png"),
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("file", response.context["form"].errors)
+        bulk_url = reverse("wagtail_bulk_action", kwargs={
+            "app_label": "wagtailimages", "model_name": "image", "action": "delete",
+        })
+        for path in (
+            reverse("wagtailimages:delete", args=[imported.pk]),
+            reverse("wagtailimages:delete_multiple", args=[imported.pk]),
+            f"{bulk_url}?id={imported.pk}",
+        ):
+            self.assertEqual(self.client.post(path, {"confirm": "yes"}).status_code, 403)
+        imported.refresh_from_db()
+        self.assertEqual(imported.title, "Helpful image title")
+        with imported.file.open("rb") as stored:
+            self.assertEqual(stored.read(), original_bytes)
+
     def test_media_server_does_not_serve_active_files_even_if_present_on_disk(self):
         originals = Path(self.media_dir.name) / "original_images"
         originals.mkdir()

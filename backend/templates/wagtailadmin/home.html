@@ -1,3 +1,8 @@
 {% extends "wagtailadmin/home.html" %}
+{% load kontturi_admin %}
 
 {% block branding_welcome %}Kontturin sisältötyöpöytä{% endblock %}
+{% block content %}
+  {% localize_dashboard_search search_form %}
+  {{ block.super }}
+{% endblock %}

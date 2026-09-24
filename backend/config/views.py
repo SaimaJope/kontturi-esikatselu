@@ -6,7 +6,7 @@ from django.http import FileResponse, Http404, HttpResponse
 from django.views.decorators.http import require_safe
 
 ROOT_ASSETS = frozenset(path.name for pattern in ("*.css", "*.js") for path in settings.PROJECT_ROOT.glob(pattern))
-SOURCE_EXTENSIONS = {".svg", ".png", ".jpg", ".jpeg", ".webp", ".woff2", ".woff", ".mp4", ".ico"}
+SOURCE_EXTENSIONS = {".svg", ".png", ".jpg", ".jpeg", ".webp", ".gif", ".woff2", ".woff", ".mp4", ".ico"}
 UPLOAD_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp"}
 
 

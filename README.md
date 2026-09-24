@@ -101,3 +101,8 @@ account, draft privacy and automatic refresh in a separate anonymous browser.
 It records the measured publication-to-refresh time and removes its test content.
 It runs against local mode by default; shared-demo checks require
 `KONTTURI_ENV=demo` and the currently assigned `KONTTURI_DEMO_HOST`.
+
+`python scripts/browser_legacy_smoke.py` checks the existing-page editor and
+image library with a limited publisher. It starts a temporary local server,
+checks text/image selection and draft/publish behavior, and restores the original
+page afterward. Run it against the seeded local demo database.

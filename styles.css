@@ -557,6 +557,22 @@ html{scroll-padding-top:24px}
 }
 @media print{.home-hero{background:white;color:var(--ink)}.hero-copy{padding-block:30px}.hero-copy .eyebrow,.hero-lead{color:var(--ink)}.hero-k,.hero-context{display:none}}
 
+/* Published rich text is a sequence of blocks, without the source page's
+   hand-authored section wrappers. Keep its reading rhythm and list markers. */
+.article-body > * + *{margin-top:1.25rem}
+.article-body > h2:not(:first-child),
+.article-body > h3:not(:first-child),
+.article-body > h4:not(:first-child){margin-top:2.5rem}
+.article-body > figure + h2,
+.article-body > figure + h3{margin-top:2rem}
+.article-body > figure img{width:100%;height:auto}
+.article-body > ul,
+.article-body > ol{padding-left:1.4em;font-size:clamp(17px,1.4vw,19px);line-height:1.9}
+.article-body li + li{margin-top:.45em}
+.article-body > blockquote{padding-left:1.25rem;border-left:3px solid var(--blue);font-size:19px;line-height:1.9}
+.article-body p a:not(.button),
+.article-body li a{color:var(--blue);text-decoration:underline}
+
 @media(prefers-reduced-motion:reduce){
 html{scroll-behavior:auto}
 *,*::before,*::after{animation:none!important;transition:none!important}}

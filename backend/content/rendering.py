@@ -4,6 +4,7 @@ Original HTML is application code. Nothing entered in the CMS is treated as a
 template, a filesystem path, or unrestricted HTML.
 """
 import re
+from hashlib import sha256
 from pathlib import Path
 from urllib.parse import quote
 
@@ -169,11 +170,16 @@ def apply_shared_content(soup, source_file=""):
 
 
 def root_relative_assets(soup):
+    # The source stylesheet has a one-hour browser cache. A content fingerprint
+    # makes published layout fixes available without editing every source page.
+    stylesheet_version = sha256((Path(settings.PROJECT_ROOT) / "styles.css").read_bytes()).hexdigest()[:12]
     for tag in soup.find_all(True):
         for attribute in ("src", "href", "poster"):
             value = tag.get(attribute)
             if isinstance(value, str) and value and not value.startswith(("/", "#")) and not re.match(r"[a-zA-Z][a-zA-Z0-9+.-]*:", value):
                 tag[attribute] = "/" + value
+        if tag.name == "link" and "stylesheet" in tag.get("rel", []) and re.fullmatch(r"/styles\.css(?:[?#].*)?", tag.get("href", "")):
+            tag["href"] = "/styles.css?v=" + stylesheet_version
         if tag.get("srcset"):
             parts = []
             for candidate in tag["srcset"].split(","):

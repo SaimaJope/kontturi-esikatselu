@@ -34,6 +34,8 @@ class Command(BaseCommand):
                 group.permissions.add(permission("content", f"view_{model}"))
                 if can_publish:
                     group.permissions.add(permission("content", f"change_{model}"))
-            for action in ["add", "choose"]:
+            # Wagtail's image library lists images with change permission.
+            # File replacement and deletion remain separately prohibited.
+            for action in ["add", "choose", "change"]:
                 GroupCollectionPermission.objects.get_or_create(group=group, collection=collection, permission=permission("wagtailimages", f"{action}_image"))
             self.stdout.write(self.style.SUCCESS(f"{name}: created. Publishing: {can_publish}. No user/group administration rights."))

@@ -105,6 +105,16 @@ class EditorialPermissionTests(TestCase):
         self.assertEqual(self.home_text.value, "Original public text")
         self.assertEqual(self.home.get_latest_revision_as_object().texts.first().value, "Updated private text")
 
+    def test_fixed_panels_keep_wagtail_widget_initialization_markup_without_row_controls(self):
+        response = self.client.get(reverse("wagtailadmin_pages:edit", args=[self.home.pk]))
+        self.assertEqual(response.status_code, 200)
+        for relation in ("texts", "images"):
+            self.assertContains(response, f'id="id_{relation}-FORMS"')
+            self.assertContains(response, f'id="id_{relation}-EMPTY_FORM_TEMPLATE"')
+            self.assertNotContains(response, f'id="id_{relation}-ADD"')
+        self.assertContains(response, 'id="inline_child_texts-0"')
+        self.assertNotContains(response, 'id="id_texts-0-DELETE-button"')
+
     def test_tampered_inline_management_form_cannot_remove_layout_text_rows(self):
         revision_id = self.home.latest_revision_id
         payload = self.legacy_form_data()

@@ -1,9 +1,21 @@
 {% load wagtailadmin_tags %}
 {{ self.formset.management_form }}
 {% for error in self.formset.non_form_errors %}<p class="error-message">{{ error }}</p>{% endfor %}
-{% for child in self.children %}
-  {% panel id=child.form.prefix heading=child.form.instance.label heading_size="label" heading_level="3" %}
-    {% for error in child.form.non_field_errors %}<p class="error-message">{{ error }}</p>{% endfor %}
-    {{ child.render_form_content }}
-  {% endpanel %}
-{% endfor %}
+<div id="id_{{ self.formset.prefix }}-FORMS">
+  {% for child in self.children %}
+    {% include "content/admin/fixed_inline_panel_child.html" %}
+  {% endfor %}
+</div>
+{% comment %}
+Wagtail's InlinePanel telepath adapter needs this template even when rows cannot
+be added. Keep its standard DOM contract for widget initialization and previews;
+the fixed formset still validates every row's identity and count on the server.
+{% endcomment %}
+<template id="id_{{ self.formset.prefix }}-EMPTY_FORM_TEMPLATE">
+  {% include "content/admin/fixed_inline_panel_child.html" with child=self.empty_child %}
+</template>
+<script>
+  (function () {
+    new InlinePanel(JSON.parse("{{ options_json|escapejs }}"));
+  })();
+</script>

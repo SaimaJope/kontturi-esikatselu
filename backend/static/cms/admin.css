@@ -27,6 +27,10 @@ body, .Draftail-Editor {
   font-family: var(--w-font-sans);
 }
 input, select, textarea, button { font-family: inherit; }
+.sidebar {
+  --w-color-surface-menu-item-active: #0569b5;
+  --w-color-text-label-menus-active: #fff;
+}
 .w-dashboard > header .w-h1 {
   font-family: var(--w-font-sans);
   font-size: clamp(27px, 2.5vw, 36px);
