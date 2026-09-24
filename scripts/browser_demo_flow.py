@@ -136,10 +136,13 @@ try:
             enrollment_key = editor.locator(".auth-secret code").text_content().strip()
             sensitive_values.append(enrollment_key)
             enrollment_bytes = b32decode(enrollment_key)
-            assert len(enrollment_bytes) == 20
-            assert editor.locator(".auth-qr img").evaluate(
+            assert len(enrollment_bytes) == 20, "Unexpected authenticator key format"
+            qr_deadline = time.monotonic() + 30
+            while not editor.locator(".auth-qr img").evaluate(
                 "image => image.complete && image.naturalWidth > 0"
-            )
+            ):
+                assert time.monotonic() < qr_deadline, "Authenticator QR image did not load"
+                editor.wait_for_timeout(100)
             token = str(totp(enrollment_bytes)).zfill(6)
             sensitive_values.append(token)
             editor.locator('input[name="generator-token"]').fill(token)
@@ -203,6 +206,7 @@ try:
             stage = "Observe automatic public refresh without manual navigation"
             expect(public_page.get_by_role("heading", name=title, exact=True)).to_be_visible(timeout=45000)
             elapsed = round(time.monotonic() - published_at, 2)
+            assert elapsed <= 45, "Public page took more than 45 seconds to refresh"
             assert len(public_navigations) > navigation_count, "No automatic page navigation was observed"
             assert all(urlsplit(url).path == "/ajankohtaista.html" for url in public_navigations)
             refreshed_version = refresh_script.get_attribute("data-version")
