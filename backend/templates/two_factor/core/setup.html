@@ -1,0 +1,28 @@
+{% extends "two_factor/_base_focus.html" %}
+{% load i18n %}
+
+{% block title %}Ota kaksivaiheinen tunnistautuminen käyttöön{% endblock %}
+{% block extra_media %}{{ form.media }}{% endblock %}
+
+{% block content %}
+  <h1>Vahvistus omaan puhelimeesi.</h1>
+  {% if wizard.steps.current == 'welcome' %}
+    <p class="auth-intro">Ota kaksivaiheinen tunnistautuminen käyttöön ennen sisällön muokkaamista. Tarvitset puhelimen tunnistautumissovelluksen.</p>
+    <div class="auth-note">Kirjaudut jatkossa salasanalla ja sovelluksen vaihtuvalla koodilla.</div>
+  {% elif wizard.steps.current == 'method' %}
+    <p class="auth-intro">Valitse tunnistautumistapa.</p>
+  {% elif wizard.steps.current == 'generator' %}
+    <p class="auth-intro">Lisää uusi tili tunnistautumissovellukseen ja skannaa tämä QR-koodi. Syötä sitten sovelluksen näyttämä kuusinumeroinen koodi.</p>
+    <div class="auth-qr"><img src="{{ QR_URL }}" alt="Skannaa QR-koodi tunnistautumissovelluksella"></div>
+    <details class="auth-secret"><summary>Lisää avain käsin</summary><p>Voit lisätä tilin sovellukseen myös tällä avaimella:</p><code>{{ secret_key }}</code></details>
+  {% else %}
+    <p class="auth-intro">Viimeistele valitsemasi tunnistautumistapa alla olevalla lomakkeella.</p>
+    {% if challenge_succeeded == False %}<p class="form-errors" role="alert">Vahvistaminen ei onnistunut. Palaa takaisin, tarkista tiedot ja yritä uudelleen.</p>{% endif %}
+  {% endif %}
+  <form action="" method="post">
+    {% csrf_token %}
+    {% include "two_factor/_wizard_forms.html" %}
+    <input type="submit" value="" hidden>
+    {% include "two_factor/_wizard_actions.html" %}
+  </form>
+{% endblock %}

@@ -1,0 +1,11 @@
+# LTS application stack. requirements.txt pins the complete resolved environment.
+Django>=5.2.15,<5.3
+wagtail==7.4.3
+django-two-factor-auth[phonenumberslite]>=1.17,<2
+django-axes>=8,<9
+beautifulsoup4>=4.13,<5
+nh3>=0.3,<0.4
+whitenoise>=6.9,<7
+dj-database-url>=3,<4
+psycopg[binary]>=3.2,<4
+waitress>=3,<4

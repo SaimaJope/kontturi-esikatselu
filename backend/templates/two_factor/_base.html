@@ -1,0 +1,41 @@
+{% load static %}
+<!doctype html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>{% block title %}Kirjaudu{% endblock %} · Kontturi</title>
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="{% static 'cms/auth.css' %}">
+  {% block extra_media %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#auth-content">Siirry kirjautumiseen</a>
+  <div class="auth-layout">
+    <main class="auth-main" id="auth-content">
+      <a class="auth-brand" href="/" aria-label="Kontturi & Co – verkkosivuston etusivu"><img src="/assets/kontturi-logo.svg" alt="Asianajotoimisto Kontturi & Co" width="270" height="44"></a>
+      <div class="auth-panel">
+        <p class="auth-eyebrow">SISÄLLÖNHALLINTA</p>
+        {% if messages %}
+          <div class="auth-messages" role="status">
+            {% for message in messages %}<p>{{ message }}</p>{% endfor %}
+          </div>
+        {% endif %}
+        {% block content_wrapper %}{% block content %}{% endblock %}{% endblock %}
+      </div>
+      <footer class="auth-footer"><a href="/">← Takaisin verkkosivustolle</a><span>Kontturi & Co</span></footer>
+    </main>
+    <aside class="auth-aside" aria-label="Kontturin verkkosivuston ylläpito">
+      <div class="auth-aside-copy">
+        <span class="auth-aside-rule" aria-hidden="true"></span>
+        <p class="auth-eyebrow">OMAN NÄKÖINEN. AJAN TASALLA.</p>
+        <h2>Asiantuntemus näkyy<br>hyvässä sisällössä.</h2>
+        <p>Verkkosivut, artikkelit ja yhteystiedot.<br>Yksi paikka pitää ne ajan tasalla.</p>
+      </div>
+      <div class="auth-photo"><img src="/assets/tyotilanne-700.webp" alt="Kontturin asiantuntijoita yhteisessä työtilanteessa" width="700" height="369"></div>
+      <p class="auth-offices">JOENSUU <span>·</span> JYVÄSKYLÄ <span>·</span> LAPPEENRANTA</p>
+    </aside>
+  </div>
+</body>
+</html>

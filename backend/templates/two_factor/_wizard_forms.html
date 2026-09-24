@@ -1,0 +1,14 @@
+{{ wizard.management_form }}
+{% if wizard.form.non_field_errors %}<div class="form-errors" role="alert">{{ wizard.form.non_field_errors }}</div>{% endif %}
+{% for field in wizard.form %}
+  {% if field.is_hidden %}
+    {{ field }}
+  {% else %}
+    <div class="auth-field{% if field.errors %} auth-field-invalid{% endif %}">
+      <label for="{{ field.id_for_label }}">{% if field.name == 'username' %}Käyttäjätunnus{% elif field.name == 'password' %}Salasana{% elif field.name == 'otp_token' %}Vahvistuskoodi{% elif field.name == 'token' %}Vahvistuskoodi{% else %}{{ field.label }}{% endif %}</label>
+      {{ field }}
+      {% if field.help_text %}<div class="helptext">{{ field.help_text }}</div>{% endif %}
+      {% if field.errors %}<div role="alert">{{ field.errors }}</div>{% endif %}
+    </div>
+  {% endif %}
+{% endfor %}

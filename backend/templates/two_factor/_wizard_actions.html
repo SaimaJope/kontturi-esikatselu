@@ -1,0 +1,5 @@
+<div class="auth-actions">
+  {% if wizard.steps.prev %}<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" class="btn btn-secondary" formnovalidate>Takaisin</button>{% endif %}
+  <button type="submit" class="btn btn-primary">{% if wizard.steps.current == 'token' or wizard.steps.current == 'backup' %}Vahvista ja kirjaudu{% else %}Jatka{% endif %} <span aria-hidden="true">→</span></button>
+</div>
+{% if cancel_url %}<p class="auth-cancel"><a href="{{ cancel_url }}">Peruuta</a></p>{% endif %}

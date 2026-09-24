@@ -1,0 +1,10 @@
+{% extends "two_factor/_base_focus.html" %}
+
+{% block title %}Tunnistautuminen on valmis{% endblock %}
+{% block content %}
+  <h1>Valmista tuli.</h1>
+  <p class="auth-intro">Kaksivaiheinen tunnistautuminen on nyt käytössä. Kirjaudut jatkossa salasanalla ja tunnistautumissovelluksen koodilla.</p>
+  <div class="auth-note">Luo vielä varakoodit ja säilytä ne turvallisessa paikassa. Niillä pääset kirjautumaan, jos puhelimesi ei ole käytettävissä.</div>
+  <p><a class="btn btn-primary" href="{% url 'two_factor:backup_tokens' %}">Luo varakoodit <span aria-hidden="true">→</span></a></p>
+  <p><a href="{% url 'wagtailadmin_home' %}">Siirry sisältötyöpöydälle</a></p>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "two_factor/_base_focus.html" %}
+{% load two_factor_tags %}
+
+{% block title %}Kirjaudu sisällönhallintaan{% endblock %}
+{% block extra_media %}{{ form.media }}{% endblock %}
+
+{% block content %}
+  {% if wizard.steps.current == 'auth' %}
+    <h1>Tervetuloa takaisin.</h1>
+    <p class="auth-intro">Kirjaudu omalla tunnuksellasi muokkaamaan Kontturin verkkosivustoa.</p>
+  {% elif wizard.steps.current == 'backup' %}
+    <h1>Käytä varakoodia.</h1>
+    <p class="auth-intro">Syötä yksi tallentamistasi kertakäyttöisistä varakoodeista.</p>
+  {% else %}
+    <h1>Vahvista kirjautuminen.</h1>
+    <p class="auth-intro">{{ device|as_verbose_action }}</p>
+  {% endif %}
+
+  <form action="" method="post">
+    {% csrf_token %}
+    {% include "two_factor/_wizard_forms.html" %}
+    <input type="submit" value="" hidden>
+    {% if other_devices %}
+      <div class="auth-alternatives">
+        <p>Voit käyttää myös toista vahvistustapaa:</p>
+        {% for other in other_devices %}<button name="challenge_device" value="{{ other.persistent_id }}" class="btn btn-secondary" type="submit">{{ other|as_action }}</button>{% endfor %}
+      </div>
+    {% endif %}
+    {% include "two_factor/_wizard_actions.html" %}
+  </form>
+
+  {% if backup_tokens %}
+    <form action="" method="post" class="auth-backup">
+      {% csrf_token %}
+      <button name="wizard_goto_step" type="submit" value="backup" class="btn btn-link">Käytä varakoodia</button>
+    </form>
+  {% endif %}
+  {% if wizard.steps.current == 'auth' %}<p class="auth-support">Tarvitsetko käyttöoikeuden tai apua kirjautumiseen?<br>Ota yhteyttä sivuston ylläpitäjään.</p>{% endif %}
+{% endblock %}

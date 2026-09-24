@@ -1,0 +1,8 @@
+{% extends "two_factor/_base_focus.html" %}
+
+{% block title %}Vahvista tunnistautuminen{% endblock %}
+{% block content %}
+  <h1>Vahvistus tarvitaan.</h1>
+  <p class="auth-intro">Sisällönhallinta edellyttää kaksivaiheista tunnistautumista. Ota tunnistautumissovellus käyttöön jatkaaksesi.</p>
+  <p><a href="{% url 'two_factor:setup' %}" class="btn btn-primary">Ota käyttöön <span aria-hidden="true">→</span></a></p>
+{% endblock %}

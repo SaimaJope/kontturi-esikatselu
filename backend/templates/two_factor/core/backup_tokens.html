@@ -1,0 +1,20 @@
+{% extends "two_factor/_base_focus.html" %}
+
+{% block title %}Varakoodit{% endblock %}
+{% block content %}
+  <h1>Varakoodit.</h1>
+  <p class="auth-intro">Jokainen koodi toimii kerran kirjautumisen vahvistamiseen. Säilytä koodit turvallisesti esimerkiksi salasanojen hallintasovelluksessa.</p>
+  {% if device.token_set.count %}
+    <ul class="auth-token-list">{% for token in device.token_set.all %}<li><code>{{ token.token }}</code></li>{% endfor %}</ul>
+    <p class="auth-support">Uusien koodien luominen mitätöi kaikki aiemmat varakoodit.</p>
+  {% else %}
+    <div class="auth-note">Sinulla ei ole vielä varakoodeja. Luo ne alla olevasta painikkeesta.</div>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="auth-actions"><button class="btn btn-primary" type="submit">{% if device.token_set.count %}Luo uudet varakoodit{% else %}Luo varakoodit{% endif %}</button></div>
+  </form>
+  <p><a href="{% url 'wagtailadmin_home' %}">Siirry sisältötyöpöydälle →</a></p>
+  <p><a href="{% url 'two_factor:profile' %}">Kirjautumisen asetukset</a></p>
+{% endblock %}

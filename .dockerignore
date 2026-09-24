@@ -1,0 +1,13 @@
+.git
+.venv
+.env
+.env.*
+backend/.local
+backend/media
+backend/staticfiles
+**/__pycache__
+**/*.sqlite3
+**/*.sqlite3-*
+test-results
+node_modules
+*.log

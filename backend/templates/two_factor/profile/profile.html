@@ -1,0 +1,19 @@
+{% extends "two_factor/_base_focus.html" %}
+
+{% block title %}Kirjautumisen asetukset{% endblock %}
+{% block content %}
+  <h1>Kirjautumisen asetukset.</h1>
+  {% if default_device %}
+    <p class="auth-intro">Kaksivaiheinen tunnistautuminen on käytössä.</p>
+    <h2>Varakoodit</h2>
+    <p>Voit käyttää kertakäyttöistä varakoodia, jos tunnistautumissovellus ei ole käytettävissä.</p>
+    <p>Koodeja jäljellä: <strong>{{ backup_tokens }}</strong></p>
+    <p><a class="btn btn-secondary" href="{% url 'two_factor:backup_tokens' %}">Näytä varakoodit</a></p>
+    <p class="auth-support">Jos vaihdat puhelinta, siirrä tunnistautumissovelluksen tili uuteen laitteeseen. Ongelmatilanteessa ota yhteyttä ylläpitäjään.</p>
+  {% else %}
+    <p class="auth-intro">Ota kaksivaiheinen tunnistautuminen käyttöön ennen sisällön muokkaamista.</p>
+    <p><a class="btn btn-primary" href="{% url 'two_factor:setup' %}">Ota käyttöön <span aria-hidden="true">→</span></a></p>
+  {% endif %}
+  <hr>
+  <p><a href="{% url 'wagtailadmin_home' %}">← Takaisin sisältötyöpöydälle</a></p>
+{% endblock %}

@@ -181,8 +181,8 @@ if (form) {
     byId('form-recipient').hidden = !person && !office;
     byId('form-recipient').textContent = 'Yhteydenotto: ' + [person?.name, office?.name].filter(Boolean).join(' · ');
     const portrait = byId('direct-portrait');
-    portrait.hidden = !person?.image;
-    if (person?.image) portrait.src = 'assets/' + person.image + '.webp';
+    portrait.hidden = !person?.image && !person?.imageUrl;
+    if (person?.imageUrl || person?.image) portrait.src = person.imageUrl || 'assets/' + person.image + '.webp';
     else portrait.removeAttribute('src');
     byId('routing-summary').textContent = [person?.name, office?.name].filter(Boolean).join(' · ') || 'Autamme löytämään sopivan asiantuntijan.';
     const link = byId('direct-profile');

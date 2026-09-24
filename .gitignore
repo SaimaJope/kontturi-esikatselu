@@ -1,0 +1,16 @@
+# Local backend state and credentials
+.venv/
+.env
+.env.*
+!.env.example
+backend/.local/
+backend/media/
+backend/staticfiles/
+backend/**/*.sqlite3
+backend/**/*.sqlite3-*
+__pycache__/
+*.py[cod]
+.pytest_cache/
+test-results/
+node_modules/
+*.log

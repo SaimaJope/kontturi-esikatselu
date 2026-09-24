@@ -1,0 +1,58 @@
+{% load wagtailadmin_tags %}
+<section class="kontturi-start" aria-labelledby="kontturi-start-title">
+  <div class="kontturi-start-heading">
+    <div>
+      <p class="kontturi-eyebrow">KONTTURI & CO · VERKKOSIVUSTO</p>
+      <h2 id="kontturi-start-title">Mitä päivitetään tänään?</h2>
+      <p>Kirjoita uutinen, viimeistele sivun teksti tai päivitä yhteystiedot.</p>
+    </div>
+    <a class="kontturi-site-link" href="/" target="_blank" rel="noopener">Avaa verkkosivusto {% icon name="link-external" %}</a>
+  </div>
+
+  {% if is_demo %}
+    <p class="kontturi-demo-note"><strong>Kokeile julkaisua:</strong> avaa verkkosivusto toiseen ikkunaan, muokkaa sisältöä ja valitse <strong>Julkaise</strong>. Avoin demosivu päivittyy automaattisesti noin 15 sekunnissa. Luonnos näkyy vain editorissa.</p>
+  {% endif %}
+
+  <div class="kontturi-actions">
+    {% if article_add_url %}
+      <a class="kontturi-action kontturi-action-primary" href="{{ article_add_url }}">
+        <span class="kontturi-action-icon">{% icon name="edit" %}</span>
+        <span class="kontturi-action-label">Uusi artikkeli</span>
+        <span class="kontturi-action-description">Aloita luonnos Ajankohtaista-osioon.</span>
+        <span class="kontturi-action-arrow" aria-hidden="true">↗</span>
+      </a>
+    {% endif %}
+    <a class="kontturi-action" href="{% url 'wagtailadmin_explore_root' %}">
+      <span class="kontturi-action-icon">{% icon name="doc-full" %}</span>
+      <span class="kontturi-action-label">Sivut ja tekstit</span>
+      <span class="kontturi-action-description">Etusivu, palvelut ja muut verkkosivun sisällöt.</span>
+      <span class="kontturi-action-arrow" aria-hidden="true">↗</span>
+    </a>
+    {% if people_url %}
+      <a class="kontturi-action" href="{{ people_url }}">
+        <span class="kontturi-action-icon">{% icon name="group" %}</span>
+        <span class="kontturi-action-label">Asiantuntijat</span>
+        <span class="kontturi-action-description">Henkilöt, tehtävänimikkeet ja yhteystiedot.</span>
+        <span class="kontturi-action-arrow" aria-hidden="true">↗</span>
+      </a>
+    {% endif %}
+    {% if offices_url %}
+      <a class="kontturi-action" href="{{ offices_url }}">
+        <span class="kontturi-action-icon">{% icon name="home" %}</span>
+        <span class="kontturi-action-label">Toimistot</span>
+        <span class="kontturi-action-description">Osoitteet ja toimipisteiden yhteystiedot.</span>
+        <span class="kontturi-action-arrow" aria-hidden="true">↗</span>
+      </a>
+    {% endif %}
+  </div>
+
+  <details class="kontturi-help">
+    <summary>Näin viet muutoksen luonnoksesta julkaisuun <span aria-hidden="true">+</span></summary>
+    <ol>
+      <li><strong>Muokkaa ja tallenna luonnos.</strong> Tallennettu luonnos ei vielä muuta julkista sivua.</li>
+      <li><strong>Esikatsele.</strong> Tarkista teksti, linkit ja kuvat sekä puhelin- että tietokonenäkymässä.</li>
+      <li><strong>Julkaise.</strong> Julkaisuoikeuden saanut käyttäjä vie muutokset verkkosivulle. Jos painike puuttuu, pyydä julkaisijaa tarkistamaan luonnos.</li>
+    </ol>
+    <p>Aiemmat versiot löytyvät sivun historiasta. Voit avata vanhan version ja palauttaa sen luonnokseksi.</p>
+  </details>
+</section>

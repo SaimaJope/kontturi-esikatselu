@@ -1,0 +1,9 @@
+{% load wagtailadmin_tags %}
+{{ self.formset.management_form }}
+{% for error in self.formset.non_form_errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+{% for child in self.children %}
+  {% panel id=child.form.prefix heading=child.form.instance.label heading_size="label" heading_level="3" %}
+    {% for error in child.form.non_field_errors %}<p class="error-message">{{ error }}</p>{% endfor %}
+    {{ child.render_form_content }}
+  {% endpanel %}
+{% endfor %}
