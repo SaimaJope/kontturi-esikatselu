@@ -13,7 +13,7 @@ class Command(BaseCommand):
             raise CommandError("Demo accounts are available only in local mode.")
         User = get_user_model()
         if User.objects.filter(username="demo-admin").exists():
-            self.stdout.write("Demo administrator already exists; password and MFA enrollment unchanged.")
+            self.stdout.write("Demo administrator already exists; password unchanged.")
             return
         password = secrets.token_urlsafe(24)
         User.objects.create_superuser(username="demo-admin", email="demo-admin@localhost", password=password, first_name="Kontturi", last_name="Demo")
@@ -24,8 +24,7 @@ class Command(BaseCommand):
                 "Website: http://127.0.0.1:8000/\n"
                 "Editor:  http://127.0.0.1:8000/admin/\n\n"
                 f"Username: demo-admin\nPassword: {password}\n\n"
-                "First login: connect an authenticator app using the QR code.\n"
-                "Save recovery codes under Account security after enrollment.\n"
+                "Sign in with your username and password. No authenticator is required for this demo.\n"
                 "This account is only for the local demonstration.\n"
                 "This file is excluded from Git and never served by the website.\n"
             )

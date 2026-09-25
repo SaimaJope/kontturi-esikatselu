@@ -6,8 +6,10 @@ Sisällönhallinnassa päivitetään verkkosivun julkista sisältöä. Sivujen m
 
 1. Avaa sivuston `/admin/`-osoite. Paikallisessa esittelyssä osoite on `http://127.0.0.1:8000/admin/`.
 2. Kirjaudu omalla käyttäjätunnuksellasi ja salasanallasi. Ylläpitäjä myöntää käyttöoikeudet.
-3. Ensimmäisellä kerralla ota kaksivaiheinen tunnistautuminen käyttöön. Lisää QR-koodi puhelimen tunnistautumissovellukseen ja syötä sovelluksen näyttämä koodi.
-4. Luo varakoodit ja säilytä ne turvallisessa paikassa. Kukin koodi toimii kerran, jos puhelimesi ei ole käytettävissä.
+
+Paikallisessa ja jaetussa demossa käyttäjätunnus ja salasana riittävät. Puhelimen tunnistautumissovellusta tai sen käyttöönottoa ei tarvita.
+
+Tuotantosivustolla käytössä on lisäksi kaksivaiheinen tunnistautuminen. Lisää ensimmäisellä kirjautumiskerralla QR-koodi puhelimen tunnistautumissovellukseen ja syötä sovelluksen näyttämä koodi. Luo myös varakoodit ja säilytä ne turvallisessa paikassa. Kukin koodi toimii kerran, jos puhelimesi ei ole käytettävissä.
 
 Kirjaudu lopuksi ulos oman käyttäjävalikkosi kautta. Älä jaa tunnusta, salasanaa, QR-koodia tai varakoodeja muiden kanssa.
 

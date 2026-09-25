@@ -8,11 +8,14 @@ independent penetration test or a guarantee against compromise.
 - Supported Django/Wagtail LTS stack and pinned runtime dependencies.
 - Framework-managed password hashing, session rotation, CSRF validation and ORM
   queries. Password validation requires at least 14 characters.
-- Mandatory TOTP or recovery-token verification before every Wagtail admin route.
-  Alternate Wagtail login routes cannot bypass the MFA middleware.
+- In production, mandatory TOTP or recovery-token verification before every
+  Wagtail admin route. Alternate Wagtail login routes cannot bypass the MFA
+  middleware. Local and shared demonstrations use username and password only;
+  they do not require authenticator setup. Production retains mandatory MFA.
 - Five failed password attempts for an account/IP combination cause a 15-minute
-  database-backed lockout. OTP verification uses django-otp's throttling and replay
-  protection. An edge rate limit is still needed for distributed abuse.
+  database-backed lockout in every mode. Production OTP verification uses
+  django-otp's throttling and replay protection. An edge rate limit is still
+  needed for distributed abuse.
 - One-hour HttpOnly, SameSite sessions; Secure cookies and HTTPS redirects in
   production. Authenticated editor/account responses are private and not cached.
 - Published/public page filtering on every public page route. Drafts and previews

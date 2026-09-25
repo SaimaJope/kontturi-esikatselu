@@ -3,10 +3,15 @@ from two_factor.urls import urlpatterns as two_factor_urls
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 
-from . import views
+from . import auth, views
+
+# Keep the existing login URL and namespace for bookmarks and safe redirects.
+account_patterns = [path("account/login/", auth.login, name="login")] + [
+    pattern for pattern in two_factor_urls[0] if getattr(pattern, "name", None) != "login"
+]
 
 urlpatterns = [
-    path("", include(two_factor_urls)),
+    path("", include((account_patterns, "two_factor"))),
     path("admin/", include(wagtailadmin_urls)),
     path("healthz", views.health),
     path("robots.txt", views.robots),

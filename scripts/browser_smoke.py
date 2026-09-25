@@ -8,7 +8,6 @@ import os
 import secrets
 import sys
 import uuid
-from base64 import b32decode
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -20,7 +19,6 @@ django.setup()
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django_otp.oath import totp
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from playwright.sync_api import sync_playwright
 from content.models import ArticlePage, LegacyPage
@@ -49,20 +47,12 @@ try:
         page.screenshot(path=str(output / "website.png"))
         page.goto("http://127.0.0.1:8000/admin/", wait_until="networkidle")
         page.screenshot(path=str(output / "login.png"), full_page=True)
-        page.locator('input[name="auth-username"]').fill(username)
-        page.locator('input[name="auth-password"]').fill(password)
-        page.locator('button[type="submit"]').last.click()
-        page.wait_for_url("**/account/two_factor/setup/")
-        page.locator('button[type="submit"]').last.click()
-        enrollment_key = page.locator('.auth-secret code').text_content().strip()
-        assert len(b32decode(enrollment_key)) == 20
-        assert page.locator('.auth-qr img').evaluate('image => image.complete && image.naturalWidth > 0')
-        token = str(totp(b32decode(enrollment_key))).zfill(6)
-        page.locator('input[name="generator-token"]').fill(token)
+        page.locator('input[name="username"]').fill(username)
+        page.locator('input[name="password"]').fill(password)
         with page.expect_navigation(wait_until="networkidle"):
             page.locator('button[type="submit"]').last.click()
-        assert TOTPDevice.objects.filter(user=user, confirmed=True).exists()
-        page.goto("http://127.0.0.1:8000/admin/", wait_until="networkidle")
+        assert not TOTPDevice.objects.filter(user=user).exists()
+        assert page.url == "http://127.0.0.1:8000/admin/"
         page.wait_for_load_state("networkidle")
         assert page.get_by_text("Mitä päivitetään tänään?").is_visible()
         page.screenshot(path=str(output / "editor-dashboard.png"), full_page=True)
@@ -89,12 +79,13 @@ try:
         page.screenshot(path=str(output / "published-article.png"), full_page=True)
         page.goto("http://127.0.0.1:8000/ajankohtaista.html", wait_until="networkidle")
         assert page.get_by_role("heading", name="Selainkoe " + tag).is_visible()
+        context.clear_cookies()
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto("http://127.0.0.1:8000/account/login/", wait_until="networkidle")
         page.screenshot(path=str(output / "login-mobile.png"), full_page=True)
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth")
         browser.close()
-    report = {"result": "passed", "checks": ["public homepage", "first login and authenticator enrollment", "real TOTP verification", "admin dashboard", "create and publish article in browser", "article listing", "mobile login"], "browser_errors": errors}
+    report = {"result": "passed", "checks": ["public homepage", "password login without authenticator enrollment", "admin dashboard", "create and publish article in browser", "article listing", "mobile login"], "browser_errors": errors}
     (output / "browser-report.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(report, ensure_ascii=True))
     if errors:

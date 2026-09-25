@@ -1,6 +1,13 @@
 from django import template
 
+from config.auth import demo_password_login_enabled
+
 register = template.Library()
+
+
+@register.simple_tag
+def admin_mfa_required():
+    return not demo_password_login_enabled()
 
 
 @register.simple_tag

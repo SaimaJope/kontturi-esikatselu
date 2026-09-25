@@ -30,7 +30,7 @@ while ((Get-Date) -lt $demoDeadline) {
         Write-Host ('Website: ' + $demoStatus.website)
         Write-Host ('Content editor: ' + $demoStatus.editor)
         Write-Host 'Login details: backend/.local/shared-demo/access.txt'
-        Write-Host 'First login includes authenticator setup. Published changes appear automatically.'
+        Write-Host 'Sign in with your username and password. Published changes appear automatically.'
         Write-Host 'Keep this PC awake and online. The temporary URL expires when the demo stops.'
         Write-Host 'Stop with: .\stop-shareable-demo.ps1'
         exit 0

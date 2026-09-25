@@ -2,7 +2,7 @@
 
 Run with the same KONTTURI_ENV/KONTTURI_DEMO_HOST as the demo server. This
 creates and removes its own limited publisher account and test article. Login
-uses the real authenticator enrollment flow. Credentials never enter reports.
+uses the real username/password demo login. Credentials never enter reports.
 Screenshots and the result are written only to ignored test-results/.
 """
 
@@ -12,7 +12,6 @@ import secrets
 import sys
 import time
 import uuid
-from base64 import b32decode
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -28,7 +27,6 @@ django.setup()
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django_otp.oath import totp
 from django_otp.plugins.otp_totp.models import TOTPDevice
 from playwright.sync_api import expect, sync_playwright
 
@@ -125,34 +123,18 @@ try:
             editor.set_default_timeout(30000)
             public_page.set_default_timeout(30000)
 
-            stage = "Real first login and authenticator enrollment"
+            stage = "Real username and password login"
             editor.goto(BASE_URL + "/admin/", wait_until="networkidle")
             screenshot(editor, "demo-flow-login.png")
-            editor.locator('input[name="auth-username"]').fill(username)
-            editor.locator('input[name="auth-password"]').fill(password)
-            editor.locator('button[type="submit"]').last.click()
-            editor.wait_for_url("**/account/two_factor/setup/")
-            editor.locator('button[type="submit"]').last.click()
-            enrollment_key = editor.locator(".auth-secret code").text_content().strip()
-            sensitive_values.append(enrollment_key)
-            enrollment_bytes = b32decode(enrollment_key)
-            assert len(enrollment_bytes) == 20, "Unexpected authenticator key format"
-            qr_deadline = time.monotonic() + 30
-            while not editor.locator(".auth-qr img").evaluate(
-                "image => image.complete && image.naturalWidth > 0"
-            ):
-                assert time.monotonic() < qr_deadline, "Authenticator QR image did not load"
-                editor.wait_for_timeout(100)
-            token = str(totp(enrollment_bytes)).zfill(6)
-            sensitive_values.append(token)
-            editor.locator('input[name="generator-token"]').fill(token)
+            editor.locator('input[name="username"]').fill(username)
+            editor.locator('input[name="password"]').fill(password)
             with editor.expect_navigation(wait_until="networkidle"):
                 editor.locator('button[type="submit"]').last.click()
-            assert TOTPDevice.objects.filter(user=user, confirmed=True).exists()
-            editor.goto(BASE_URL + "/admin/", wait_until="networkidle")
+            expect(editor).to_have_url(BASE_URL + "/admin/")
+            assert not TOTPDevice.objects.filter(user=user).exists()
             expect(editor.get_by_text("Mitä päivitetään tänään?", exact=True)).to_be_visible()
             screenshot(editor, "demo-flow-dashboard.png")
-            report["checks"].append("Limited publisher completed real first login and TOTP enrollment")
+            report["checks"].append("Limited publisher signed in with username and password directly, without authenticator enrollment")
 
             stage = "Open anonymous public news page"
             public_navigations = []

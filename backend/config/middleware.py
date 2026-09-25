@@ -5,6 +5,8 @@ from django.contrib.auth.views import redirect_to_login
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.urls import reverse
 
+from .auth import demo_password_login_enabled
+
 
 class LoopbackOnlyMiddleware:
     """A local demo cannot silently become an internet-accessible deployment."""
@@ -28,16 +30,22 @@ class LoopbackOnlyMiddleware:
 
 
 class AdminMFAMiddleware:
-    """Protect every Wagtail route, including its alternate login endpoints."""
+    """Protect Wagtail permissions everywhere and require MFA in production."""
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
+        password_demo = demo_password_login_enabled()
+        if password_demo and request.path.startswith("/account/two_factor/"):
+            if not request.user.is_authenticated:
+                return redirect_to_login("/admin/", reverse("two_factor:login"))
+            return HttpResponseRedirect("/admin/")
         # django-two-factor-auth's setup view checks existing devices on GET;
         # protect its POST wizard and QR endpoint as well. A password-only
         # session must verify the enrolled device before replacing it.
         if (
-            request.user.is_authenticated
+            not password_demo
+            and request.user.is_authenticated
             and not request.user.is_verified()
             and request.path in {reverse("two_factor:setup"), reverse("two_factor:qr")}
         ):
@@ -49,7 +57,7 @@ class AdminMFAMiddleware:
                 return redirect_to_login(request.get_full_path(), reverse("two_factor:login"))
             if not request.user.is_active or not request.user.has_perm("wagtailadmin.access_admin"):
                 return HttpResponseForbidden("Sinulla ei ole oikeutta sisällönhallintaan.")
-            if not request.user.is_verified():
+            if not password_demo and not request.user.is_verified():
                 from django_otp.plugins.otp_totp.models import TOTPDevice
                 if TOTPDevice.objects.filter(user=request.user, confirmed=True).exists():
                     return redirect_to_login(request.get_full_path(), reverse("two_factor:login"))

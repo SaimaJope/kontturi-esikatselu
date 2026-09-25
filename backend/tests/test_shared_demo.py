@@ -20,7 +20,10 @@ from django_otp.plugins.otp_totp.models import TOTPDevice
 from wagtail.models import Site
 
 
-@override_settings(ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"])
+@override_settings(
+    ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"],
+    ENVIRONMENT="production", CMS_DEMO_MODE=False,
+)
 class SharedDemoEnrollmentTests(TestCase):
     @classmethod
     def setUpTestData(cls):

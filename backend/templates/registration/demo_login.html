@@ -1,0 +1,22 @@
+{% extends "two_factor/_base_focus.html" %}
+
+{% block title %}Kirjaudu sisällönhallintaan{% endblock %}
+
+{% block content %}
+  <h1>Tervetuloa takaisin.</h1>
+  <p class="auth-intro">Kirjaudu omalla tunnuksellasi muokkaamaan Kontturin verkkosivustoa.</p>
+  <form method="post">
+    {% csrf_token %}
+    {% if form.non_field_errors %}<div class="form-errors" role="alert">{{ form.non_field_errors }}</div>{% endif %}
+    {% for field in form %}
+      <div class="auth-field{% if field.errors %} auth-field-invalid{% endif %}">
+        <label for="{{ field.id_for_label }}">{% if field.name == 'username' %}Käyttäjätunnus{% elif field.name == 'password' %}Salasana{% else %}{{ field.label }}{% endif %}</label>
+        {{ field }}
+        {% if field.errors %}<div role="alert">{{ field.errors }}</div>{% endif %}
+      </div>
+    {% endfor %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <div class="auth-actions"><button type="submit" class="btn btn-primary">Kirjaudu <span aria-hidden="true">→</span></button></div>
+  </form>
+  <p class="auth-support">Tarvitsetko käyttöoikeuden tai apua kirjautumiseen?<br>Ota yhteyttä sivuston ylläpitäjään.</p>
+{% endblock %}

@@ -24,7 +24,7 @@ class ProductionConfigurationTests(SimpleTestCase):
         script = (
             "import json; import config.settings as s; "
             "print(json.dumps({key: getattr(s, key) for key in "
-            "['DEBUG','LOCAL_DEMO','SESSION_COOKIE_SECURE','CSRF_COOKIE_SECURE',"
+            "['DEBUG','LOCAL_DEMO','CMS_DEMO_MODE','SESSION_COOKIE_SECURE','CSRF_COOKIE_SECURE',"
             "'SECURE_SSL_REDIRECT','SECURE_HSTS_SECONDS','SESSION_COOKIE_HTTPONLY']}))"
         )
         return subprocess.run([sys.executable, "-c", script], cwd=settings.BASE_DIR, env=environment, capture_output=True, text=True, timeout=15)
@@ -35,6 +35,7 @@ class ProductionConfigurationTests(SimpleTestCase):
         values = json.loads(result.stdout)
         self.assertFalse(values["DEBUG"])
         self.assertFalse(values["LOCAL_DEMO"])
+        self.assertFalse(values["CMS_DEMO_MODE"])
         for key in ("SESSION_COOKIE_SECURE", "CSRF_COOKIE_SECURE", "SECURE_SSL_REDIRECT", "SESSION_COOKIE_HTTPONLY"):
             self.assertTrue(values[key], key)
         self.assertGreaterEqual(values["SECURE_HSTS_SECONDS"], 31536000)

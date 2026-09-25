@@ -16,11 +16,11 @@ powershell -ExecutionPolicy Bypass -File .\start-backend.ps1
 - Content editor: <http://127.0.0.1:8000/admin/>
 - Generated login details: `backend/.local/demo-access.txt`
 
-On first login, enroll an authenticator such as Microsoft Authenticator, Google
-Authenticator or a password manager with TOTP. Keep the generated recovery
-codes. Every administrator needs a password **and** a second factor; there is no
-shared PIN or password-only admin bypass. The demo accepts loopback connections
-only. Stop the server with Ctrl+C. Restarting preserves content and accounts.
+Sign in with the generated username and password. Local and shared demos do not
+require an authenticator app or a second-factor setup step. Production still
+requires a password and TOTP or a recovery code. The local demo accepts loopback
+connections only. Stop the server with Ctrl+C. Restarting preserves content and
+accounts.
 
 The launcher imports the existing public content only on the first run; later
 runs do not overwrite edits. It does not upload the supplied emails/PDFs or
@@ -36,8 +36,9 @@ powershell -ExecutionPolicy Bypass -File .\start-shareable-demo.ps1
 
 The launcher prints the website and editor links. Login details are in
 `backend/.local/shared-demo/access.txt`; a Finnish email draft without the password
-is in `backend/.local/shared-demo/email-draft.fi.txt`. First login enrolls an
-authenticator. The demo account can edit and publish content but cannot manage users.
+is in `backend/.local/shared-demo/email-draft.fi.txt`. Sign in with the username
+and password; no authenticator is required for the demo. The demo account can
+edit and publish content but cannot manage users.
 
 Open the website and editor in two windows. Save a draft to keep a change private,
 then choose **Julkaise** to publish it. An open demo page checks for published
@@ -53,7 +54,7 @@ permanent hosting. No live domain or DNS changes are made.
 
 The sharing process downloads cloudflared from its official GitHub release and
 checks the published SHA-256 digest before running it. The application uses only
-the exact assigned hostname, HTTPS cookies, no indexing, mandatory MFA and a
+the exact assigned hostname, HTTPS cookies, no indexing, password login and a
 loopback-only application server. Demo content, media and credentials remain
 separate from the local administrator demo and are excluded from Git.
 
@@ -92,7 +93,7 @@ run the application so only its explicitly routed files are served.
 
 For a complete browser publishing check, install `backend/requirements-dev.txt`,
 run `python -m playwright install chromium`, start the local server and run
-`python scripts/browser_smoke.py`. It verifies password/TOTP login, article
+`python scripts/browser_smoke.py`. It verifies demo password login, article
 creation and publication, the public listing, and mobile login, then removes its
 own temporary test user/article. Screenshots are written to `test-results/`.
 

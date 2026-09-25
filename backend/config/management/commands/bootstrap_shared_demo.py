@@ -55,7 +55,7 @@ class Command(BaseCommand):
             f"Website: {base_url}/\nEditor: {base_url}/admin/\n\n"
             f"Username: {username}\n"
             + (f"Password: {password}\n" if password else "Password: use the password you set in the editor.\n")
-            + "\nFirst login: connect an authenticator using the QR code and enter its code.\n"
+            + "\nSign in with your username and password. No authenticator is required for this demo.\n"
             "Use this account for your demonstration; each further editor needs their own account.\n"
             "Publish page/article changes. An open public page refreshes in about 15 seconds.\n"
             "Drafts do not change the public website.\n\n"
@@ -72,8 +72,7 @@ class Command(BaseCommand):
             "Sen kautta voi muokata sivujen tekstejä ja kuvia sekä kirjoittaa ja julkaista artikkeleita.\n\n"
             f"Demosivusto: {base_url}/\nSisällönhallinta: {base_url}/admin/\n\n"
             "Sisällönhallintaan kirjaudutaan käyttäjätunnuksella ja salasanalla. "
-            "Lisäksi käytössä on kaksivaiheinen tunnistautuminen: ensimmäisellä kirjautumiskerralla "
-            "liitetään tunnistautumissovellus QR-koodilla. Tunnukset toimitetaan erikseen.\n\n"
+            "Demossa ei tarvita tunnistautumissovellusta. Tunnukset toimitetaan erikseen.\n\n"
             "Muutokset voi tallentaa ensin luonnoksena ja tarkistaa esikatselussa. "
             "Julkaise-painikkeen jälkeen ne tulevat demosivulle. "
             "Valmiiksi auki oleva demosivu päivittyy automaattisesti noin 15 sekunnissa.\n\n"
