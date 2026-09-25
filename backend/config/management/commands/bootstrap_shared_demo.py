@@ -1,5 +1,6 @@
 """Prepare a separate, narrowly scoped account for a temporary public demo."""
 import json
+import re
 import secrets
 
 from django.conf import settings
@@ -80,4 +81,17 @@ class Command(BaseCommand):
             "joka toimii esittelykoneen ollessa päällä; sovitaan kokeilulle sopiva ajankohta.\n",
             encoding="utf-8",
         )
+        # Refresh already prepared recipient instructions when the temporary
+        # hostname changes. Keep their wording, passwords and account untouched.
+        for filename in ("tatu-access.txt", "email-tatu.fi.txt"):
+            path = settings.DEMO_DIR / filename
+            if path.is_file():
+                existing = path.read_text(encoding="utf-8")
+                refreshed = re.sub(
+                    r"https://[a-z0-9]+(?:-[a-z0-9]+)*\.trycloudflare\.com(?=[/\s]|$)",
+                    lambda match: base_url,
+                    existing,
+                )
+                if refreshed != existing:
+                    path.write_text(refreshed, encoding="utf-8")
         self.stdout.write(self.style.SUCCESS(f"Shared demo publisher ready. Login details: {access_path}"))

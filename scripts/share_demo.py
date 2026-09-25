@@ -28,6 +28,8 @@ STATUS = STATE / "status.json"
 LOCK = STATE / "supervisor.lock"
 STOP = STATE / "stop.json"
 PORT = 8001
+HEALTH_CHECK_INTERVAL = 30
+HEALTH_CHECK_TIMEOUT = 5
 CREATE_FLAGS = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
 RELEASE_API = "https://api.github.com/repos/cloudflare/cloudflared/releases/latest"
 TUNNEL_HOST = re.compile(r"https://([a-z0-9]+(?:-[a-z0-9]+)*\.trycloudflare\.com)(?=[\s/|]|$)")
@@ -159,6 +161,42 @@ def running() -> bool:
     return not acquired
 
 
+def check_public_status(status: dict) -> dict:
+    """A living cloudflared process can still have an expired or offline tunnel."""
+    status = status.copy()
+    host = status.get("host", "")
+    reachable = False
+    if TUNNEL_HOST.fullmatch(f"https://{host}"):
+        request = Request(f"https://{host}/healthz", headers={"Cache-Control": "no-cache"})
+        try:
+            with urlopen(request, timeout=HEALTH_CHECK_TIMEOUT) as response:
+                reachable = response.status == 200 and response.read(3) == b"ok"
+        except (OSError, URLError):
+            pass
+    status.update(
+        state="ready" if reachable else "unavailable",
+        stage="Ready" if reachable else "The public HTTPS link is unavailable",
+        public_reachable=reachable,
+        checked_at=time.time(),
+    )
+    return status
+
+
+def current_status() -> dict:
+    """Check readiness now without racing the supervisor's status-file writes."""
+    status = read_status()
+    status["running"] = running()
+    if not status["running"]:
+        if status.get("state") in {"starting", "ready", "unavailable", "stopping"}:
+            status["state"] = "stopped"
+        status.pop("website", None)
+        status.pop("editor", None)
+        status["public_reachable"] = False
+    elif status.get("state") in {"ready", "unavailable"}:
+        status = check_public_status(status)
+    return status
+
+
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as stream:
@@ -264,6 +302,13 @@ class Demo:
         if self.server is not None and self.server.poll() is not None:
             raise RuntimeError("The demo web server stopped. See server.log, then restart the demo.")
 
+    def refresh_public_health(self) -> None:
+        self.check_children()
+        checked = check_public_status(self.status)
+        self.check_children()
+        self.status = checked
+        self.update()
+
     def open_log(self, filename: str):
         stream = (STATE / filename).open("wb")
         self.files.append(stream)
@@ -355,8 +400,12 @@ class Demo:
             links = f"Website: https://{host}/\nEditor: https://{host}/admin/\n\nLogin: backend/.local/shared-demo/access.txt\n\nThis temporary link works only while this PC and the demo launcher are running.\nRestarting creates a new URL and retains the demo content and login.\n"
             (STATE / "links.txt").write_text(links, encoding="utf-8")
             self.update(state="ready", stage="Ready", website=f"https://{host}/", editor=f"https://{host}/admin/")
+            next_health_check = time.monotonic() + HEALTH_CHECK_INTERVAL
             while True:
                 self.check_children()
+                if time.monotonic() >= next_health_check:
+                    self.refresh_public_health()
+                    next_health_check = time.monotonic() + HEALTH_CHECK_INTERVAL
                 time.sleep(1)
         except (StopRequested, KeyboardInterrupt):
             self.update(state="stopping", stage="Closing the temporary demo")
@@ -386,11 +435,7 @@ def main() -> int:
     mode.add_argument("--stop", action="store_true")
     arguments = parser.parse_args()
     if arguments.status:
-        status = read_status()
-        status["running"] = running()
-        if not status["running"] and status.get("state") in {"starting", "ready", "stopping"}:
-            status["state"] = "stopped"
-        print(json.dumps(status))
+        print(json.dumps(current_status()))
         return 0
     if arguments.stop:
         if not running():

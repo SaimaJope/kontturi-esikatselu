@@ -38,6 +38,9 @@ while ((Get-Date) -lt $demoDeadline) {
     if ($demoStatus.state -eq 'failed') {
         throw ('Demo startup failed: ' + $demoStatus.error + ' Logs: backend/.local/shared-demo/')
     }
+    if ($demoStatus.state -eq 'unavailable') {
+        throw 'The demo process is running, but its public HTTPS link is unavailable. Check this PC is online. If it stays unavailable, run .\stop-shareable-demo.ps1 and then .\start-shareable-demo.ps1 to obtain a new link. Saved content and login will be retained.'
+    }
     if (-not $demoStatus.running) {
         throw 'The demo launcher stopped. See backend/.local/shared-demo/launcher.stderr.log.'
     }

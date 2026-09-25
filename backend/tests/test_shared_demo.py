@@ -193,7 +193,21 @@ class SharedDemoAccountTests(TestCase):
                 self.assertTrue(user.check_password(credentials["password"]))
                 self.assertNotIn(credentials["password"], output.getvalue())
                 device = TOTPDevice.objects.create(user=user, name="default", confirmed=True)
+                recipient_copy = (
+                    "Website: https://expired-link.trycloudflare.com/\n"
+                    "Editor: https://expired-link.trycloudflare.com/admin/\n"
+                    "Username: tatu-demo\nPassword: unchanged-recipient-password\n"
+                    "Current site: https://kontturi.fi/\n"
+                )
+                for filename in ("tatu-access.txt", "email-tatu.fi.txt"):
+                    (demo_dir / filename).write_text(recipient_copy, encoding="utf-8")
                 call_command("bootstrap_shared_demo", stdout=output)
+                for filename in ("tatu-access.txt", "email-tatu.fi.txt"):
+                    self.assertEqual(
+                        (demo_dir / filename).read_text(encoding="utf-8"),
+                        recipient_copy.replace("expired-link.trycloudflare.com", "account-test.trycloudflare.com"),
+                    )
+                self.assertNotIn("unchanged-recipient-password", output.getvalue())
                 user.refresh_from_db()
                 self.assertTrue(user.check_password(credentials["password"]))
                 self.assertTrue(TOTPDevice.objects.filter(pk=device.pk, confirmed=True).exists())
