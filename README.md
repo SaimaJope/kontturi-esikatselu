@@ -37,8 +37,10 @@ powershell -ExecutionPolicy Bypass -File .\start-shareable-demo.ps1
 The launcher prints the website and editor links. Login details are in
 `backend/.local/shared-demo/access.txt`; a Finnish email draft without the password
 is in `backend/.local/shared-demo/email-draft.fi.txt`. Sign in with the username
-and password; no authenticator is required for the demo. The demo account can
-edit and publish content but cannot manage users.
+and password; no authenticator is required for the demo. The generated
+`kontturi-demo` publisher can edit and publish content but cannot manage users.
+Tatu's separately assigned owner account has full CMS administration, including
+users, roles and site settings. Account permissions persist in the demo database.
 
 Open the website and editor in two windows. Save a draft to keep a change private,
 then choose **Julkaise** to publish it. An open demo page checks for published

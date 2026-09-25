@@ -29,7 +29,8 @@ terms meet the firm's needs. No service has been purchased or provisioned.
 6. Run `python manage.py check --deploy`. Start the application and verify HTTPS,
    secure cookies, login, MFA, image upload, draft preview, publishing and rollback.
 7. Create individual staff users. Assign the editor group for drafts and the
-   publisher group for publication; keep superuser access for maintainers. Every
+   publisher group for publication; reserve superuser access for the designated
+   site owner and maintainers. Every
    admin session must complete MFA, including superusers.
 8. Configure SMTP if editorial workflow notifications are needed. Password reset
    by email is disabled; maintainers can use Django's `changepassword` command.

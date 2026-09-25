@@ -25,7 +25,7 @@ independent penetration test or a guarantee against compromise.
   schemes are rejected. Editors cannot save executable templates or JavaScript.
 - Existing image bytes cannot be overwritten. Editors upload a new image and
   select it in a page draft; deletion and bulk image operations are reserved for
-  maintainers so ownership alone cannot bypass publication permissions.
+  site administrators so image ownership alone cannot bypass publication permissions.
 - Images are limited to validated JPG, JPEG, PNG and WebP, at most 8 MiB and 24
   megapixels. SVG/HTML/document uploads are not part of this CMS. Existing trusted
   SVG logos are application assets, separate from uploaded media.
@@ -39,7 +39,9 @@ independent penetration test or a guarantee against compromise.
   production mode fails to start without explicit hosts, a strong secret and
   PostgreSQL. DEBUG remains off.
 - Shared demonstration mode uses a separate database, media directory and secret,
-  one exact temporary HTTPS hostname, Secure cookies and a limited publisher.
+  one exact temporary HTTPS hostname, Secure cookies and a limited default publisher.
+  A designated site owner may separately receive full CMS administrator access;
+  that does not grant the same role to other demonstration accounts.
   The application accepts loopback connections only, behind the temporary tunnel.
   Client-supplied forwarding headers cannot change its request identity or scheme.
   Search indexing stays disabled even if production indexing is requested in the
