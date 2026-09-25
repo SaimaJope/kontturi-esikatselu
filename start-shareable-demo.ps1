@@ -31,7 +31,12 @@ while ((Get-Date) -lt $demoDeadline) {
         Write-Host ('Content editor: ' + $demoStatus.editor)
         Write-Host 'Login details: backend/.local/shared-demo/access.txt'
         Write-Host 'Sign in with your username and password. Published changes appear automatically.'
-        Write-Host 'Keep this PC awake and online. The temporary URL expires when the demo stops.'
+        if ($demoStatus.idle_sleep_prevention_active) {
+            Write-Host 'Automatic idle sleep is prevented while the demo runs; the screen can still turn off.'
+        } else {
+            Write-Warning 'Automatic idle-sleep prevention is unavailable. Keep this PC awake manually.'
+        }
+        Write-Host 'Keep this PC online and its lid open. Manual sleep, shutdown or a network outage can break the temporary link.'
         Write-Host 'Stop with: .\stop-shareable-demo.ps1'
         exit 0
     }

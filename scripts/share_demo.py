@@ -34,6 +34,50 @@ CREATE_FLAGS = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
 RELEASE_API = "https://api.github.com/repos/cloudflare/cloudflared/releases/latest"
 TUNNEL_HOST = re.compile(r"https://([a-z0-9]+(?:-[a-z0-9]+)*\.trycloudflare\.com)(?=[\s/|]|$)")
 _WINDOWS_JOB_HANDLE = None
+ES_CONTINUOUS = 0x80000000
+ES_SYSTEM_REQUIRED = 0x00000001
+
+
+def set_windows_execution_state(flags: int) -> int:
+    import ctypes
+    from ctypes import wintypes
+
+    function = ctypes.WinDLL("kernel32", use_last_error=True).SetThreadExecutionState
+    function.argtypes = [wintypes.DWORD]
+    function.restype = wintypes.DWORD
+    return function(flags)
+
+
+class IdleSleepGuard:
+    """Keep only this supervisor's thread active; never change the power plan.
+
+    Windows still honors explicit sleep and lid closure. The display may sleep.
+    Windows also clears this request automatically if the thread/process exits.
+    """
+
+    def __init__(self) -> None:
+        self.active = False
+        self.warning = None
+
+    def start(self) -> None:
+        try:
+            if os.name != "nt" or not set_windows_execution_state(ES_CONTINUOUS | ES_SYSTEM_REQUIRED):
+                raise OSError("Idle-sleep prevention unavailable")
+            self.active = True
+        except (AttributeError, OSError):
+            self.warning = "Automatic idle-sleep prevention is unavailable. Keep this PC awake manually."
+
+    def close(self) -> None:
+        if self.active:
+            try:
+                if not set_windows_execution_state(ES_CONTINUOUS):
+                    raise OSError("Idle-sleep request was not cleared")
+                self.active = False
+            except (AttributeError, OSError):
+                self.warning = "The idle-sleep request could not be cleared; Windows will release it when the supervisor exits."
+
+    def status(self) -> dict:
+        return {"idle_sleep_prevention_active": self.active, "idle_sleep_warning": self.warning}
 
 
 def contain_windows_process_tree() -> None:
@@ -192,6 +236,7 @@ def current_status() -> dict:
         status.pop("website", None)
         status.pop("editor", None)
         status["public_reachable"] = False
+        status["idle_sleep_prevention_active"] = False
     elif status.get("state") in {"ready", "unavailable"}:
         status = check_public_status(status)
     return status
@@ -282,6 +327,7 @@ class Demo:
         self.tunnel = None
         self.server = None
         self.files = []
+        self.sleep_guard = IdleSleepGuard()
 
     def update(self, **values) -> None:
         self.status.update(values)
@@ -361,6 +407,8 @@ class Demo:
     def run(self) -> int:
         self.update(stage="Checking the demo server port")
         try:
+            self.sleep_guard.start()
+            self.update(**self.sleep_guard.status())
             contain_windows_process_tree()
             ensure_port_free()
             self.update(stage="Verifying the official cloudflared executable")
@@ -415,6 +463,8 @@ class Demo:
             self.update(state="failed", stage="Stopped", error=str(error))
             return 1
         finally:
+            self.sleep_guard.close()
+            self.status.update(self.sleep_guard.status())
             stop_process(self.server)
             stop_process(self.tunnel)
             for stream in self.files:

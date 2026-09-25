@@ -9,6 +9,21 @@ and serves WSGI with Waitress. A hosting provider must terminate HTTPS and forwa
 requests to port 8000. Select a service whose backup, patching and availability
 terms meet the firm's needs. No service has been purchased or provisioned.
 
+## Temporary shared demonstration
+
+Run `start-shareable-demo.ps1` and use the current links it prints. The Windows
+supervisor requests prevention of automatic idle sleep only while it runs;
+stopping it releases the request, without changing system power settings or
+keeping the screen on. The launcher warns if this request is unavailable, and
+`scripts/share_demo.py --status` reports `idle_sleep_prevention_active`.
+
+Keep the PC online and its lid open: this does not prevent manual sleep, lid
+closure, shutdown or network loss. Those can invalidate the temporary tunnel.
+If the public link stays unavailable after reconnecting, run
+`stop-shareable-demo.ps1`, then `start-shareable-demo.ps1`, and share the new URL.
+Saved content and accounts remain. A permanent host is needed for availability
+independent of this PC; an idle-sleep request is not an uptime guarantee.
+
 ## Configuration
 
 1. Create managed PostgreSQL with TLS and automated encrypted backups.
