@@ -43,7 +43,12 @@
         }
       } else if (field.value !== field.defaultValue) return true;
     }
-    return [...document.querySelectorAll("video, audio")].some((media) => !media.paused);
+    return [...document.querySelectorAll("video, audio")].some((media) => {
+      // The decorative hero loops continuously and must not block publication.
+      const background = media.matches("video.hero-video[aria-hidden='true']") &&
+        media.muted && media.loop && !media.controls;
+      return !media.paused && !background;
+    });
   }
 
   async function check() {

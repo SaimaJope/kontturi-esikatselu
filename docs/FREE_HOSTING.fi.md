@@ -1,5 +1,25 @@
 # Pysyvä demo ilman maksullista palvelupakettia
 
+## Käytössä oleva demo
+
+- Sivusto: https://kontturi-sisallonhallinta.onrender.com/
+- Sisällönhallinta: https://kontturi-sisallonhallinta.onrender.com/admin/
+
+Demo on julkaistu erilliseen Kontturi-työtilaan Renderin Free-palveluna.
+Tatu ja Niina käyttävät aiempia henkilökohtaisia tunnuksiaan ja salasanojaan;
+molemmilla on pääkäyttäjän oikeudet. Tunnuksia ei säilytetä tässä repossa.
+Julkaistu muutos päivittyy avoimelle demosivulle tavallisesti noin 15 sekunnissa.
+Luonnos ei näy julkisella sivulla.
+
+Paikallinen Cloudflare-demo on pysäytetty. Näiden osoitteiden käyttö ei vaadi
+esittelykonetta, tunnelia tai paikallisen käynnistysskriptin suorittamista.
+Älä käynnistä vanhaa demoa pilvidemon päivittämiseksi: sillä olisi erillinen,
+siirtohetkeen jäänyt tietokanta. Pilvidemon sisältöä muokataan yllä olevassa
+sisällönhallinnassa. Koodimuutokset julkaistaan Renderiin erikseen; automaattiset
+Git-julkaisut on poistettu käytöstä.
+
+## Kokoonpano
+
 Kokoonpano on Render Free (Django/Wagtail) ja Neon Free (PostgreSQL sekä
 yksityinen S3-yhteensopiva kuvatallennus Frankfurtissa). `render.yaml` luo vain
 yhden ilmaisen verkkopalvelun. Siinä ei ole Render-tietokantaa tai maksullista levyä.
