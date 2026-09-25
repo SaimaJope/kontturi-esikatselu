@@ -9,3 +9,4 @@ whitenoise>=6.9,<7
 dj-database-url>=3,<4
 psycopg[binary]>=3.2,<4
 waitress>=3,<4
+django-storages[s3]>=1.14.6,<2

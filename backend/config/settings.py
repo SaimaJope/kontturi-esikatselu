@@ -7,6 +7,7 @@ DEBUG is always disabled.
 import os
 import re
 import secrets
+from urllib.parse import urlsplit
 from datetime import timedelta
 from pathlib import Path
 
@@ -18,15 +19,16 @@ PROJECT_ROOT = BASE_DIR.parent
 SITE_SOURCE_ROOT = PROJECT_ROOT
 LOCAL_DIR = BASE_DIR / ".local"
 ENVIRONMENT = os.environ.get("KONTTURI_ENV", "local")
-if ENVIRONMENT not in {"local", "demo", "production"}:
-    raise ImproperlyConfigured("KONTTURI_ENV must be local, demo or production")
+if ENVIRONMENT not in {"local", "demo", "staging", "production"}:
+    raise ImproperlyConfigured("KONTTURI_ENV must be local, demo, staging or production")
 LOCAL_DEMO = ENVIRONMENT == "local"
 SHARED_DEMO = ENVIRONMENT == "demo"
-CMS_DEMO_MODE = LOCAL_DEMO or SHARED_DEMO
+HOSTED_DEMO = ENVIRONMENT == "staging"
+CMS_DEMO_MODE = LOCAL_DEMO or SHARED_DEMO or HOSTED_DEMO
 DEMO_DIR = LOCAL_DIR / "shared-demo"
 DEBUG = False
 
-if CMS_DEMO_MODE:
+if LOCAL_DEMO or SHARED_DEMO:
     state_dir = DEMO_DIR if SHARED_DEMO else LOCAL_DIR
     state_dir.mkdir(parents=True, exist_ok=True)
     secret_file = state_dir / "secret-key"
@@ -55,7 +57,15 @@ else:
     database_url = os.environ.get("DATABASE_URL", "")
     if not database_url.startswith(("postgres://", "postgresql://")):
         raise ImproperlyConfigured("Production requires a PostgreSQL DATABASE_URL.")
-    DATABASES = {"default": dj_database_url.parse(database_url, conn_max_age=60, conn_health_checks=True, ssl_require=True)}
+    database_config = dj_database_url.parse(database_url, conn_max_age=60, conn_health_checks=True)
+    database_options = database_config.setdefault("OPTIONS", {})
+    sslmode = database_options.setdefault("sslmode", "require")
+    if sslmode not in {"require", "verify-ca", "verify-full"}:
+        raise ImproperlyConfigured("Hosted PostgreSQL connections must require TLS.")
+    if sslmode in {"verify-ca", "verify-full"}:
+        import certifi
+        database_options.setdefault("sslrootcert", certifi.where())
+    DATABASES = {"default": database_config}
 
 INSTALLED_APPS = [
     "config",
@@ -152,6 +162,29 @@ STORAGES = {
     "default": {"BACKEND": "django.core.files.storage.FileSystemStorage"},
     "staticfiles": {"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage"},
 }
+MEDIA_STORAGE = os.environ.get("MEDIA_STORAGE", "filesystem")
+if MEDIA_STORAGE not in {"filesystem", "s3"}:
+    raise ImproperlyConfigured("MEDIA_STORAGE must be filesystem or s3.")
+if MEDIA_STORAGE == "s3":
+    names = ("S3_ENDPOINT_URL", "S3_BUCKET_NAME", "S3_ACCESS_KEY_ID", "S3_SECRET_ACCESS_KEY")
+    if not all(os.environ.get(name) for name in names):
+        raise ImproperlyConfigured("Object storage requires its endpoint, bucket and credentials.")
+    endpoint = urlsplit(os.environ["S3_ENDPOINT_URL"])
+    if endpoint.scheme != "https" or not endpoint.hostname or endpoint.username or endpoint.password:
+        raise ImproperlyConfigured("Object storage requires an HTTPS endpoint without embedded credentials.")
+    STORAGES["default"] = {
+        "BACKEND": "config.storage.PrivateMediaStorage",
+        "OPTIONS": {
+            "endpoint_url": os.environ["S3_ENDPOINT_URL"],
+            "bucket_name": os.environ["S3_BUCKET_NAME"],
+            "access_key": os.environ["S3_ACCESS_KEY_ID"],
+            "secret_key": os.environ["S3_SECRET_ACCESS_KEY"],
+            "region_name": os.environ.get("S3_REGION_NAME", "us-east-1"),
+            "addressing_style": "path", "signature_version": "s3v4",
+            "default_acl": None, "file_overwrite": False,
+            "max_memory_size": 2 * 1024 * 1024,
+        },
+    }
 
 WAGTAIL_SITE_NAME = "Kontturi & Co · Sisällönhallinta"
 WAGTAILADMIN_BASE_URL = ("https://" + demo_host) if SHARED_DEMO else os.environ.get("CMS_BASE_URL", "http://127.0.0.1:8000")
@@ -191,7 +224,7 @@ X_FRAME_OPTIONS = "DENY"
 # Only set this behind a proxy which strips and rewrites X-Forwarded-Proto.
 if os.environ.get("TRUST_HTTPS_PROXY") == "1":
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-    if CMS_DEMO_MODE:
+    if LOCAL_DEMO or SHARED_DEMO:
         raise ImproperlyConfigured("Do not trust proxy headers in local or shared demo mode.")
 
 INDEX_SITE = ENVIRONMENT == "production" and os.environ.get("INDEX_SITE") == "1"

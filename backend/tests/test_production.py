@@ -48,10 +48,27 @@ class ProductionConfigurationTests(SimpleTestCase):
             {"DJANGO_ALLOWED_HOSTS": "*"},
             {"DJANGO_ALLOWED_HOSTS": ".example.invalid"},
             {"DATABASE_URL": "sqlite:///db.sqlite3"},
+            {"DATABASE_URL": "postgresql://cms:test@127.0.0.1/test?sslmode=disable"},
             {"KONTTURI_ENV": "typo-environment"},
         )
         for environment in invalid:
             with self.subTest(setting=next(iter(environment))):
                 result = self.load_production(**environment)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("ImproperlyConfigured", result.stderr)
+
+    def test_hosted_staging_keeps_secure_transport_without_local_database_fallback(self):
+        result = self.load_production(KONTTURI_ENV="staging")
+        self.assertEqual(result.returncode, 0, result.stderr)
+        values = json.loads(result.stdout)
+        self.assertTrue(values["CMS_DEMO_MODE"])
+        self.assertFalse(values["LOCAL_DEMO"])
+        self.assertFalse(values["DEBUG"])
+        self.assertTrue(values["SESSION_COOKIE_SECURE"])
+        self.assertTrue(values["CSRF_COOKIE_SECURE"])
+        for invalid in ({"DATABASE_URL": "sqlite:///demo.sqlite3"}, {"DJANGO_SECRET_KEY": ""},
+                        {"DJANGO_ALLOWED_HOSTS": "*"}):
+            with self.subTest(invalid=invalid):
+                result = self.load_production(KONTTURI_ENV="staging", **invalid)
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("ImproperlyConfigured", result.stderr)

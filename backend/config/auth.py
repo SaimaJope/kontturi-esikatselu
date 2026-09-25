@@ -7,7 +7,7 @@ from two_factor.views import LoginView as TwoFactorLoginView
 
 def demo_password_login_enabled():
     # Production cannot opt out of MFA through a separate feature flag.
-    return settings.CMS_DEMO_MODE and settings.ENVIRONMENT in {"local", "demo"}
+    return settings.CMS_DEMO_MODE and settings.ENVIRONMENT in {"local", "demo", "staging"}
 
 
 def login(request, *args, **kwargs):

@@ -33,8 +33,8 @@ class DemoPasswordLoginTests(TestCase):
             {"username": self.user.username, "password": PASSWORD, **extra},
         )
 
-    def test_both_demo_environments_allow_password_login_without_phone_setup(self):
-        for environment in ("local", "demo"):
+    def test_demo_environments_allow_password_login_without_phone_setup(self):
+        for environment in ("local", "demo", "staging"):
             with self.subTest(environment=environment), override_settings(ENVIRONMENT=environment):
                 self.client.logout()
                 login_page = self.client.get(reverse("two_factor:login"))

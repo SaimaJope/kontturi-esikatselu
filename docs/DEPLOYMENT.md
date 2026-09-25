@@ -3,6 +3,12 @@
 The local demonstration is ready to run without paid accounts. Production is a
 separate deployment: GitHub Pages cannot run a Python CMS or a database.
 
+For the requested free persistent demonstration, use
+[the Render Free + Neon Free guide](FREE_HOSTING.fi.md). Its `staging` mode
+keeps password-only demo login while requiring HTTPS, PostgreSQL and external
+object storage. The production guidance below is separate; do not provision
+paid services for the free demonstration.
+
 Use a managed application host with an EU region, managed PostgreSQL and a
 persistent private media volume. The included Dockerfile runs as a non-root user
 and serves WSGI with Waitress. A hosting provider must terminate HTTPS and forward

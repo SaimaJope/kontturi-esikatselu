@@ -1,0 +1,42 @@
+# Free web service only. No Render database or paid disk is provisioned.
+# Connect an external Free-plan PostgreSQL database and S3-compatible storage.
+# Import the current demo before disabling KONTTURI_MIGRATION_PENDING.
+services:
+  - type: web
+    name: kontturi-sisallonhallinta
+    runtime: docker
+    repo: https://github.com/SaimaJope/kontturi-esikatselu.git
+    branch: feat/managed-cms
+    region: frankfurt
+    plan: free
+    autoDeployTrigger: off
+    dockerfilePath: ./Dockerfile
+    dockerCommand: python /app/scripts/start_render.py
+    healthCheckPath: /healthz
+    envVars:
+      - key: KONTTURI_ENV
+        value: staging
+      - key: KONTTURI_MIGRATION_PENDING
+        value: "1"
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: MEDIA_STORAGE
+        value: s3
+      - key: S3_ENDPOINT_URL
+        sync: false
+      - key: S3_BUCKET_NAME
+        sync: false
+      - key: S3_REGION_NAME
+        value: eu-central-1
+      - key: S3_ACCESS_KEY_ID
+        sync: false
+      - key: S3_SECRET_ACCESS_KEY
+        sync: false
+      - key: MEDIA_ROOT
+        value: /var/lib/kontturi/media
+      - key: INDEX_SITE
+        value: "0"
+      - key: TRUST_HTTPS_PROXY
+        value: "0"
