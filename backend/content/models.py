@@ -76,7 +76,7 @@ class SiteProfile(models.Model):
     on_call_tel = models.CharField("Päivystysnumero (kansainvälinen)", max_length=40, validators=[phone_validator])
     original = models.JSONField(default=dict, editable=False)
 
-    panels = [HelpPanel(content="Yleiset yhteystiedot päivittyvät heti. Verkkolomake on edelleen paikallinen esikatselu eikä lähetä viestejä."), FieldPanel("name"), FieldPanel("email"), FieldPanel("on_call_phone"), FieldPanel("on_call_tel")]
+    panels = [HelpPanel(content="Yleiset yhteystiedot päivittyvät heti. Verkkolomake ei lähetä viestejä. Yhteyttä voi ottaa puhelimitse tai sähköpostilla."), FieldPanel("name"), FieldPanel("email"), FieldPanel("on_call_phone"), FieldPanel("on_call_tel")]
 
     class Meta:
         verbose_name = "sivuston yhteystiedot"
