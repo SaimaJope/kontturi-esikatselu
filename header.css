@@ -26,6 +26,7 @@ html {
 .site-header .utility-inner { min-height: 36px; gap: 16px; }
 .site-header .utility-navigation { color: #fff; font-size: 12px; gap: 24px; }
 .site-header .utility-navigation a { min-height: 36px; }
+.site-header .utility-language { white-space: nowrap; }
 .site-header .social-links { color: #fff; }
 .site-header .social-links a { min-height: 36px; }
 .site-header .utility-emergency {
@@ -66,12 +67,17 @@ html {
   .site-header .header-inner { min-height: 80px; gap: 16px; }
   .site-header .brand { width: min(248px, calc(100vw - 160px)); min-width: 0; }
   .site-header .utility-inner { min-height: 40px; gap: 8px; }
-  .site-header .utility-navigation { display: none; }
-  .site-header .header-utility .social-links { display: flex; gap: 0; margin-right: auto; }
+  .site-header .utility-navigation { display: flex; }
+  .site-header .utility-navigation > a:not(.utility-language) { display: none; }
+  .site-header .utility-navigation .utility-language { min-height: 40px; }
+  .site-header .header-utility .social-links { display: flex; gap: 0; margin-right: 0; }
   .site-header .social-links a { min-height: 40px; width: 32px; }
   .site-header .utility-emergency { min-height: 40px; padding-left: 0; border-left: 0; }
   .site-header .utility-emergency > span { font-size: 11px; }
   .site-header .mobile-navigation[open] nav { max-height: calc(100dvh - 120px); }
+}
+@media (max-width: 600px) {
+  .site-header .header-utility .social-links { display: none; }
 }
 @media (max-width: 420px) {
   .site-header .utility-emergency > span { display: none; }
