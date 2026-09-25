@@ -39,24 +39,33 @@ input, select, textarea, button { font-family: inherit; }
   letter-spacing: -.04em;
 }
 .kontturi-action-label { font-family: var(--w-font-sans); }
+.sidebar .sidebar-custom-branding {
+  display: block;
+  margin: 52px 16px 32px;
+  padding: 0;
+}
+.sidebar .sidebar-custom-branding:focus-visible {
+  outline: 2px solid #8ec7ee;
+  outline-offset: 7px;
+}
 .kontturi-sidebar-brand {
   display: flex;
-  width: 190px;
+  width: 168px;
   max-width: 100%;
-  padding: 12px 8px 10px;
+  padding: 0;
   flex-direction: column;
   align-items: center;
-  gap: 9px;
-  border-radius: 4px;
-  background: #fff;
-  color: #4b5055;
+  gap: 12px;
+  background: transparent;
+  color: #bbc5cc;
 }
-.kontturi-sidebar-brand img { width: 100%; height: auto; }
+.kontturi-sidebar-brand img { display: block; width: 100%; height: auto; }
 .kontturi-sidebar-brand .kontturi-logo-mark { display: none; }
-.kontturi-sidebar-brand > span { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-.sidebar--slim .kontturi-sidebar-brand { padding: 7px 3px; }
+.kontturi-sidebar-brand > span { font-size: 9px; line-height: 1.4; letter-spacing: .14em; text-transform: uppercase; }
+.sidebar.sidebar--slim .sidebar-custom-branding { width: 32px; margin: 52px auto 32px; padding: 0; }
+.sidebar--slim .kontturi-sidebar-brand { width: 32px; }
 .sidebar--slim .kontturi-sidebar-brand .kontturi-logo-full { display: none; }
-.sidebar--slim .kontturi-sidebar-brand .kontturi-logo-mark { display: block; width: 30px; height: 30px; }
+.sidebar--slim .kontturi-sidebar-brand .kontturi-logo-mark { display: block; width: 32px; height: 32px; }
 .sidebar--slim .kontturi-sidebar-brand > span { display: none; }
 .kontturi-start { margin: 0 0 48px; }
 .kontturi-start-heading { display: flex; justify-content: space-between; gap: 24px; align-items: center; margin-bottom: 22px; }
@@ -85,6 +94,7 @@ input, select, textarea, button { font-family: inherit; }
 .kontturi-help li { margin-bottom: 11px; padding-left: 8px; }
 .kontturi-help > p { font-size: 12px; line-height: 1.8; }
 @media (max-width: 800px) {
+  .sidebar--mobile .sidebar-custom-branding { margin-top: 72px; }
   .kontturi-start-heading { align-items: start; flex-direction: column; gap: 9px; }
   .kontturi-action { padding: 20px; min-height: 175px; }
   .kontturi-action-arrow { top: 20px; right: 20px; }
