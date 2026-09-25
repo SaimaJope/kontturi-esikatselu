@@ -82,7 +82,7 @@ class Command(BaseCommand):
         )
         # Refresh already prepared recipient instructions when the temporary
         # hostname changes. Keep their wording, passwords and account untouched.
-        for filename in ("tatu-access.txt", "email-tatu.fi.txt"):
+        for filename in ("tatu-access.txt", "email-tatu.fi.txt", "niina-access.txt", "email-niina.fi.txt"):
             path = settings.DEMO_DIR / filename
             if path.is_file():
                 existing = path.read_text(encoding="utf-8")

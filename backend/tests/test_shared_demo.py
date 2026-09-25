@@ -202,13 +202,18 @@ class SharedDemoAccountTests(TestCase):
                     "Username: tatu-demo\nPassword: unchanged-recipient-password\n"
                     "Current site: https://kontturi.fi/\n"
                 )
-                for filename in ("tatu-access.txt", "email-tatu.fi.txt"):
-                    (demo_dir / filename).write_text(recipient_copy, encoding="utf-8")
+                recipient_copies = {
+                    filename: recipient_copy.replace("tatu-demo", f"{recipient}-demo")
+                    for recipient in ("tatu", "niina")
+                    for filename in (f"{recipient}-access.txt", f"email-{recipient}.fi.txt")
+                }
+                for filename, contents in recipient_copies.items():
+                    (demo_dir / filename).write_text(contents, encoding="utf-8")
                 call_command("bootstrap_shared_demo", stdout=output)
-                for filename in ("tatu-access.txt", "email-tatu.fi.txt"):
+                for filename, contents in recipient_copies.items():
                     self.assertEqual(
                         (demo_dir / filename).read_text(encoding="utf-8"),
-                        recipient_copy.replace("expired-link.trycloudflare.com", "account-test.trycloudflare.com"),
+                        contents.replace("expired-link.trycloudflare.com", "account-test.trycloudflare.com"),
                     )
                 self.assertNotIn("unchanged-recipient-password", output.getvalue())
                 user.refresh_from_db()
