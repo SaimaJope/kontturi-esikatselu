@@ -6,7 +6,7 @@ body{font-size:17px}
 h1,h2,h3{font-weight:500}
 h2{font-size:clamp(32px,3.75vw,54px);line-height:1.13;letter-spacing:-.045em}
 .eyebrow{letter-spacing:.1em}
-.site-header{position:sticky;top:-113px;transition:top 380ms var(--ease-out),box-shadow 380ms;background:#fff;z-index:40}
+.site-header{position:sticky;top:-113px;transition:top 320ms ease,box-shadow 320ms ease;background:#fff;z-index:40}
 .site-header.header-visible{top:0;box-shadow:0 8px 24px #14263508}
 .header-inner{min-height:104px}
 .brand{width:280px}
@@ -94,7 +94,7 @@ a:hover .link-arrow{transform:translateX(5px)}
 .field input,.field select,.field textarea{font-size:16px;min-height:52px;border-color:#bac8d1;transition:border-color 220ms,box-shadow 220ms}
 .field :is(input,select,textarea):focus{border-color:var(--blue);box-shadow:0 0 0 3px #0569b514}
 .field textarea{min-height:150px}
-.reveal-pending{opacity:0;transform:translateY(24px);transition:opacity 720ms var(--ease-out),transform 720ms var(--ease-out);transition-delay:var(--reveal-delay,0ms)}
+.reveal-pending{opacity:0;transform:translateY(8px);transition:opacity 380ms cubic-bezier(.2,.65,.3,1),transform 560ms cubic-bezier(.2,.65,.3,1)}
 .reveal-pending.is-visible{opacity:1;transform:translateY(0)}
 @keyframes hero-enter{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes mark-enter{from{opacity:0;transform:translate(20px,-50%)}to{opacity:.13;transform:translate(0,-50%)}}
