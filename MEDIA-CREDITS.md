@@ -13,3 +13,11 @@
 Pexels permits free commercial use and modification, without required attribution. Its restrictions still apply, including no implied endorsement and no redistribution as stock media. This is illustrative stock footage for the preview, not footage of Kontturi staff or premises. It can be replaced with client footage without changing the page structure.
 
 Existing Kontturi logos and staff photographs retain their existing ownership.
+
+## News photographs and artwork
+
+- Source: the 33 articles in [Kontturi & Co's news archive](https://asianajotoimisto.com/uutiset), dated 12 May 2021–28 September 2026.
+- Local files: `assets/news/`, including the original article images and the smaller versions served by the source site.
+- Per-image article and media source URLs: `assets/news/sources.json`.
+- The images retain their original proportions. News lists use responsive thumbnails; individual articles show the corresponding original image.
+- Ownership remains with the original rights holders.
