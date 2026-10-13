@@ -26,6 +26,17 @@ Luonnoksen tallentaminen ei muuta sivustolla näkyvää versiota. Jo julkaistu s
 
 Demossa voit pitää verkkosivuston auki toisessa ikkunassa. Julkaisemisen jälkeen avoin demosivu päivittyy automaattisesti noin 15 sekunnissa. Taustalla oleva välilehti tarkistaa muutokset, kun palaat siihen. Sivulla aloitettu lomakkeen täyttäminen estää automaattisen päivityksen, jotta kirjoitettu teksti säilyy; silloin voit päivittää sivun itse sopivalla hetkellä.
 
+## Näytä tai piilota osioita
+
+Etusivulla ja Palvelut-sivulla on osioita (esimerkiksi videon päällä olevat painikkeet tai palvelukortit), jotka voi ottaa pois näkyvistä poistamatta niitä.
+
+1. Avaa sivu muokattavaksi.
+2. Selaa alas kohtaan **Osiot: näytä tai piilota**.
+3. Poista valinta osion kohdalta, kun haluat piilottaa sen. Valitse se uudelleen, kun haluat sen takaisin.
+4. Tarkista Esikatselu ja valitse Julkaise.
+
+Piilotettu osio ei häviä, ja sen tekstit säilyvät. Uusia osioita ei voi lisätä tai poistaa tästä kohdasta.
+
 ## Kirjoita artikkeli
 
 1. Valitse sisältötyöpöydältä **Uusi artikkeli**. Voit myös avata **Ajankohtaista**-sivun ja lisätä sen alle artikkelin.

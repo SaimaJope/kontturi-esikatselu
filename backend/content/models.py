@@ -94,6 +94,7 @@ class LegacyPage(Page):
         HelpPanel(content="Yläosan otsikko nimeää sivun hallinnassa ja selaimen välilehdellä. Sivulla näkyvä pääotsikko ja muu sisältö löytyvät alta Tekstit-osiosta. Muokkaa tekstejä ja kuvia, tarkista Esikatselu ja valitse Julkaise. Tallennettu luonnos ei näy yleisölle. Asiantuntijoiden ja toimipaikkojen yhteystiedot muokataan yhteisissä sisältötietueissa."),
         FixedInlinePanel("texts", label="Sivun tekstit", heading="Tekstit sivun järjestyksessä"),
         FixedInlinePanel("images", label="Sivun kuvat", heading="Kuvat ja vaihtoehtoiset tekstit"),
+        FixedInlinePanel("blocks", label="Sivun osiot", heading="Osiot: näytä tai piilota"),
     ]
 
     class Meta:
@@ -123,6 +124,18 @@ class LegacyText(Orderable):
     class Meta(Orderable.Meta):
         verbose_name = "teksti"
         verbose_name_plural = "Tekstit"
+
+
+class LegacyBlock(Orderable):
+    page = ParentalKey(LegacyPage, on_delete=models.CASCADE, related_name="blocks")
+    key = models.CharField(max_length=40, editable=False)
+    label = models.CharField("Osio", max_length=200, editable=False)
+    visible = models.BooleanField("Näytetään sivulla", default=True, help_text="Poista valinta, niin osio piilotetaan sivulta. Valitse uudelleen, niin se palaa. Osion tekstit säilyvät.")
+    panels = [FieldPanel("label", read_only=True), FieldPanel("visible")]
+
+    class Meta(Orderable.Meta):
+        verbose_name = "osio"
+        verbose_name_plural = "Osiot"
 
 
 class LegacyImage(Orderable):

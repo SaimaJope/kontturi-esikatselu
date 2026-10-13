@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from django.test import TestCase, override_settings
 from wagtail.models import Page, PageViewRestriction, Site
 
-from content.models import ArticlePage, LegacyPage, LegacyText, Person
+from content.models import ArticlePage, LegacyBlock, LegacyPage, LegacyText, Person
 
 
 @override_settings(ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"])
@@ -145,14 +145,54 @@ class ContentSecurityTests(TestCase):
 
 @override_settings(ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"])
 class HiddenBlockTests(TestCase):
-    def test_home_hero_buttons_and_service_gateways_are_not_public(self):
+    @classmethod
+    def setUpTestData(cls):
+        cls.home = Page.objects.get(depth=1).add_child(instance=LegacyPage(title="Etusivu", slug="hidden-home", source_file="index.html"))
+        cls.services = cls.home.add_child(instance=LegacyPage(title="Palvelut", slug="palvelut", source_file="palvelut.html"))
+
+    def render(self, page):
         from content.rendering import render_legacy
 
-        home = Page.objects.get(depth=1).add_child(instance=LegacyPage(title="Etusivu", slug="hidden-home", source_file="index.html"))
-        services = home.add_child(instance=LegacyPage(title="Palvelut", slug="palvelut", source_file="palvelut.html"))
-        index = BeautifulSoup(render_legacy(home), "html.parser")
-        palvelut = BeautifulSoup(render_legacy(services), "html.parser")
-        self.assertIsNotNone(index.select_one(".hero-lead"))
-        self.assertIsNone(index.select_one(".hero-actions"))
-        self.assertIsNotNone(palvelut.select_one(".practice-results"))
-        self.assertIsNone(palvelut.select_one(".services-gateways"))
+        return BeautifulSoup(render_legacy(page), "html.parser")
+
+    def test_hero_buttons_and_service_cards_are_hidden_by_default(self):
+        self.assertIsNone(self.render(self.home).select_one(".hero-actions"))
+        self.assertIsNone(self.render(self.services).select_one(".services-gateways"))
+        self.assertIsNotNone(self.render(self.home).select_one(".hero-lead"))
+        self.assertIsNotNone(self.render(self.services).select_one(".practice-results"))
+
+    def test_editor_can_switch_a_block_on_and_another_off(self):
+        LegacyBlock.objects.create(page=self.home, key="hero-buttons", label="x", visible=True)
+        LegacyBlock.objects.create(page=self.home, key="people", label="x", visible=False)
+        soup = self.render(self.home)
+        self.assertIsNotNone(soup.select_one(".hero-actions"))
+        self.assertIsNone(soup.select_one(".people-section"))
+        self.assertIsNotNone(soup.select_one(".process-section"))
+
+    def test_hiding_a_block_does_not_move_saved_text_edits(self):
+        from content.rendering import editable_nodes, source_document
+
+        nodes = editable_nodes(source_document("index.html"))
+        key = next(i for i, node in enumerate(nodes) if "Etkö ole varma" in node)
+        LegacyText.objects.create(page=self.home, key=key, label="x", value="Muokattu kappale")
+        self.assertIn("Muokattu kappale", self.render(self.home).get_text())
+
+
+class BlockMigrationTests(TestCase):
+    def test_existing_pages_get_switches_in_live_and_draft_revisions(self):
+        from importlib import import_module
+        from types import SimpleNamespace
+
+        from django.apps import apps
+        from django.db import connection
+
+        home = Page.objects.get(depth=1).add_child(instance=LegacyPage(title="Etusivu", slug="migrated-home", source_file="index.html"))
+        home.save_revision().publish()
+        self.assertEqual(home.get_latest_revision_as_object().blocks.count(), 0)
+        import_module("content.migrations.0005_page_blocks").add_blocks(apps, SimpleNamespace(connection=connection))
+        home.refresh_from_db()
+        draft = home.get_latest_revision_as_object()
+        state = {block.key: block.visible for block in draft.blocks.all()}
+        self.assertEqual(state["hero-buttons"], False)
+        self.assertEqual(state["people"], True)
+        self.assertIn("blocks", home.live_revision.content)

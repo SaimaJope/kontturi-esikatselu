@@ -10,7 +10,8 @@ from django.utils import timezone
 from wagtail.images import get_image_model
 from wagtail.models import Collection, Page, Site
 
-from content.models import ArticlePage, ImportedAsset, LegacyImage, LegacyPage, LegacyText, Office, Person, SiteProfile
+from content.blocks import blocks_for
+from content.models import ArticlePage, ImportedAsset, LegacyBlock, LegacyImage, LegacyPage, LegacyText, Office, Person, SiteProfile
 from content.rendering import editable_images, editable_nodes, source_document
 
 
@@ -92,6 +93,8 @@ class Command(BaseCommand):
             closest = node.find_parent(list(labels))
             label = labels.get(closest.name if closest else "", "Teksti") + " · " + text[:150]
             page.texts.add(LegacyText(key=key, label=label, value=text, sort_order=key))
+        for order, (key, _selector, label, default) in enumerate(blocks_for(source_file)):
+            page.blocks.add(LegacyBlock(key=key, label=label, visible=default, sort_order=order))
         for key, image in enumerate(editable_images(soup)):
             source = image.get("src", "")
             self.import_image(source)

@@ -17,6 +17,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from wagtail.rich_text import expand_db_html
 
+from .blocks import blocks_for
 from .demo import append_refresh_script, render_version
 
 
@@ -208,19 +209,13 @@ def sanitize_rich_text(value):
     return nh3.clean(expanded, tags={"p", "h2", "h3", "h4", "strong", "b", "em", "i", "ul", "ol", "li", "a", "blockquote", "br", "hr"}, attributes={"a": {"href", "title"}}, url_schemes={"http", "https", "mailto", "tel"}, strip_comments=True, link_rel="noopener noreferrer")
 
 
-# Blocks hidden from the public page. They are removed only after the editors'
-# text replacements, because saved edits are matched by position in the
-# original markup and deleting the source nodes would shift them.
-HIDDEN_BLOCKS = {
-    "index.html": (".hero-actions",),
-    "palvelut.html": (".services-gateways",),
-}
-
-
-def hide_blocks(soup, source_file):
-    for selector in HIDDEN_BLOCKS.get(source_file, ()):
-        for node in soup.select(selector):
-            node.decompose()
+def hide_blocks(soup, page):
+    """Remove the sections an editor has switched off (see blocks.py)."""
+    states = {block.key: block.visible for block in page.blocks.all()}
+    for key, selector, _label, default in blocks_for(page.source_file):
+        if not states.get(key, default):
+            for node in soup.select(selector):
+                node.decompose()
 
 
 def render_legacy(page, request=None):
@@ -245,7 +240,7 @@ def render_legacy(page, request=None):
         section = soup.select_one(".editorial-story")
         if section:
             section.find_parent("section").replace_with(BeautifulSoup(markup, "html.parser"))
-    hide_blocks(soup, page.source_file)
+    hide_blocks(soup, page)
     apply_shared_content(soup, page.source_file)
     set_metadata(soup, page)
     root_relative_assets(soup)

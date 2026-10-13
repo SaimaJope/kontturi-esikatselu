@@ -94,8 +94,25 @@ class EditorialPermissionTests(TestCase):
             "texts-TOTAL_FORMS": "1", "texts-INITIAL_FORMS": "1",
             "texts-0-id": str(self.home_text.pk), "texts-0-value": "Updated private text",
             "images-TOTAL_FORMS": "0", "images-INITIAL_FORMS": "0",
+            "blocks-TOTAL_FORMS": "0", "blocks-INITIAL_FORMS": "0",
             "comments-TOTAL_FORMS": "0", "comments-INITIAL_FORMS": "0",
         }
+
+    def test_editor_can_save_a_section_switch(self):
+        from content.models import LegacyBlock
+
+        block = LegacyBlock.objects.create(page=self.home, key="hero-buttons", label="Painikkeet", visible=False)
+        self.home.save_revision()
+        data = self.legacy_form_data() | {
+            "blocks-TOTAL_FORMS": "1", "blocks-INITIAL_FORMS": "1",
+            "blocks-0-id": str(block.pk), "blocks-0-visible": "on",
+            "action-publish": "Publish",
+        }
+        response = self.client.post(reverse("wagtailadmin_pages:edit", args=[self.home.pk]), data)
+        self.assertEqual(response.status_code, 302)
+        self.home.refresh_from_db()
+        draft = self.home.get_latest_revision_as_object()
+        self.assertEqual([item.visible for item in draft.blocks.all()], [True])
 
     def test_legacy_text_editor_can_save_revision_without_changing_published_text(self):
         response = self.client.post(reverse("wagtailadmin_pages:edit", args=[self.home.pk]), self.legacy_form_data())
