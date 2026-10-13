@@ -208,6 +208,21 @@ def sanitize_rich_text(value):
     return nh3.clean(expanded, tags={"p", "h2", "h3", "h4", "strong", "b", "em", "i", "ul", "ol", "li", "a", "blockquote", "br", "hr"}, attributes={"a": {"href", "title"}}, url_schemes={"http", "https", "mailto", "tel"}, strip_comments=True, link_rel="noopener noreferrer")
 
 
+# Blocks hidden from the public page. They are removed only after the editors'
+# text replacements, because saved edits are matched by position in the
+# original markup and deleting the source nodes would shift them.
+HIDDEN_BLOCKS = {
+    "index.html": (".hero-actions",),
+    "palvelut.html": (".services-gateways",),
+}
+
+
+def hide_blocks(soup, source_file):
+    for selector in HIDDEN_BLOCKS.get(source_file, ()):
+        for node in soup.select(selector):
+            node.decompose()
+
+
 def render_legacy(page, request=None):
     demo_version = render_version(request)
     soup = source_document(page.source_file)
@@ -230,6 +245,7 @@ def render_legacy(page, request=None):
         section = soup.select_one(".editorial-story")
         if section:
             section.find_parent("section").replace_with(BeautifulSoup(markup, "html.parser"))
+    hide_blocks(soup, page.source_file)
     apply_shared_content(soup, page.source_file)
     set_metadata(soup, page)
     root_relative_assets(soup)

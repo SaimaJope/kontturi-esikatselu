@@ -141,3 +141,18 @@ class ContentSecurityTests(TestCase):
         for url in ("/", "/security-test.html", "/site-data.js"):
             with self.subTest(url=url):
                 self.assertEqual(self.client.post(url, {"title": "unauthorized"}).status_code, 405)
+
+
+@override_settings(ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"])
+class HiddenBlockTests(TestCase):
+    def test_home_hero_buttons_and_service_gateways_are_not_public(self):
+        from content.rendering import render_legacy
+
+        home = Page.objects.get(depth=1).add_child(instance=LegacyPage(title="Etusivu", slug="hidden-home", source_file="index.html"))
+        services = home.add_child(instance=LegacyPage(title="Palvelut", slug="palvelut", source_file="palvelut.html"))
+        index = BeautifulSoup(render_legacy(home), "html.parser")
+        palvelut = BeautifulSoup(render_legacy(services), "html.parser")
+        self.assertIsNotNone(index.select_one(".hero-lead"))
+        self.assertIsNone(index.select_one(".hero-actions"))
+        self.assertIsNotNone(palvelut.select_one(".practice-results"))
+        self.assertIsNone(palvelut.select_one(".services-gateways"))
