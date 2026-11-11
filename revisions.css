@@ -1,0 +1,73 @@
+/* Client feedback round (Nettisivut.docx), November 2026. Loaded last, after footer.css. */
+
+/* Process section: the contact link now sits under the third step */
+.process-steps>.text-link{margin-top:28px}
+.process-steps>.button{margin-top:36px}
+
+/* Home: "Osaamisemme" as running text with a single link to Palvelut */
+.expertise-intro{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(44px,8vw,100px);align-items:start}
+.expertise-intro>div{min-width:0}
+.expertise-intro-copy p{font-size:17px;line-height:1.8;max-width:640px}
+.expertise-intro-copy p+p{margin-top:22px}
+.expertise-intro-copy .text-link{margin-top:28px}
+@media(max-width:900px){
+  .expertise-intro{grid-template-columns:1fr;gap:28px}
+  .expertise-intro-copy p{font-size:16px;line-height:1.7}
+}
+
+/* Home footer: blue band with the logo only, then the main menu */
+body[data-page] .site-footer.site-footer--simple{padding:0 0 24px}
+.footer-band{background:linear-gradient(112deg,#1479c8 0%,#0569b5 52%,#034b7e 100%);background:var(--brand-gradient,linear-gradient(112deg,#1479c8 0%,#0569b5 52%,#034b7e 100%));padding:72px 0;position:relative;isolation:isolate;overflow:clip}
+.footer-band>.wrap{position:relative;z-index:1}
+.footer-band-brand{display:block;width:320px;max-width:78%}
+.footer-band-brand img{display:block;width:100%;height:auto}
+.footer-band-k{position:absolute;z-index:0;width:560px;max-width:none;right:-40px;top:50%;transform:translateY(-50%);opacity:.12;pointer-events:none}
+.footer-band-brand:focus-visible{outline-color:#fff}
+.site-footer--simple .footer-navigation{display:flex;flex-wrap:wrap;border-top:0;padding-block:26px 22px;gap:12px 32px;font-size:14px}
+.site-footer--simple .footer-bottom>a{color:inherit;padding-right:54px}
+@media(max-width:700px){
+  .footer-band{padding:48px 0}
+  .footer-band-k{width:420px;right:-200px;opacity:.1}
+  .site-footer--simple .footer-bottom>a{padding-right:0}
+}
+
+/* Practice pages: the lawyers named for each practice area */
+.practice-people{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:700px){
+  .practice-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 16px}
+  .practice-experts .section-heading>.text-link{margin-top:16px}
+}
+
+/* Palvelut: names on each practice row */
+.services-page .practice-row .practice-row-experts{margin-top:10px;color:var(--ink);font-weight:500}
+
+/* Hinnasto: price list, one row under another */
+.price-list{margin:36px 0 0;border-bottom:1px solid var(--line)}
+.price-row{display:flex;justify-content:space-between;align-items:baseline;gap:32px;padding:20px 0;border-top:1px solid var(--line)}
+.price-row dt{flex:1 1 0;min-width:0;font-size:18px;line-height:1.5;color:var(--ink);overflow-wrap:break-word}
+.price-row dt span{display:block;margin-top:4px;font-size:14px;line-height:1.6;color:var(--muted)}
+.price-row dd{flex:0 1 auto;max-width:45%;margin:0;font-size:18px;font-weight:500;line-height:1.5;color:var(--ink);text-align:right}
+.price-row--placeholder dt,.price-row--placeholder dd{color:var(--muted);font-style:italic;font-weight:400}
+/* Below this width the text column is narrow, so the price drops under the service name */
+@media(max-width:1000px){
+  .price-row{flex-direction:column;gap:6px;padding:18px 0}
+  .price-row dt{flex:none}
+  .price-row dd{max-width:none;text-align:left}
+}
+@media(max-width:560px){
+  .price-row dt,.price-row dd{font-size:17px}
+}
+
+/* Asiakasomistaja: booking numbers for all three offices in one row */
+.booking-numbers{margin-top:34px}
+.booking-numbers>p{margin:0 0 14px;font-size:13px;letter-spacing:.09em;text-transform:uppercase;color:var(--blue)}
+.booking-numbers ul{display:flex;flex-wrap:wrap;gap:16px 0;margin:0;padding:0;list-style:none}
+.booking-numbers li{padding:0 36px;border-left:1px solid var(--line)}
+.booking-numbers li:first-child{padding-left:0;border-left:0}
+.booking-numbers span{display:block;font-size:13px;line-height:1.6;color:var(--muted)}
+.booking-numbers a{display:inline-flex;align-items:center;min-height:44px;font-size:clamp(20px,2vw,26px);color:var(--ink)}
+.booking-numbers a:hover{color:var(--blue)}
+@media(max-width:640px){
+  .booking-numbers ul{flex-direction:column;gap:10px}
+  .booking-numbers li{padding:0;border-left:0}
+}
