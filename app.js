@@ -1,4 +1,4 @@
-import { people, offices, site } from './site-data.js?v=20260910-premium';
+import { people, offices, site } from './site-data.js?v=20261118-1';
 
 const backToTop = document.querySelector('.back-to-top');
 if (backToTop) {
@@ -102,7 +102,7 @@ if (search) {
   const cards = [...document.querySelectorAll('[data-person-name]')];
   const count = document.querySelector('#search-count');
   const clear = document.querySelector('#clear-search');
-  const grid = document.querySelector('.directory-grid');
+  const grids = [...document.querySelectorAll('.directory-grid')];
   const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('fi').trim().replace(/\s+/g, ' ');
   function filterPeople(updateURL = true) {
     const terms = normalize(search.value).split(' ').filter(Boolean);
@@ -111,7 +111,13 @@ if (search) {
       card.hidden = !terms.every(term => normalize(card.dataset.personName).includes(term));
       if (!card.hidden) total++;
     });
-    grid.hidden = total === 0;
+    grids.forEach(grid => {
+      // Juristit and Sihteerit are separate grids; a heading goes with its grid.
+      const empty = !grid.querySelector('.person-card:not([hidden])');
+      grid.hidden = empty;
+      const title = grid.previousElementSibling;
+      if (title?.classList.contains('directory-group-title')) title.hidden = empty;
+    });
     document.querySelector('#search-empty').hidden = total !== 0;
     count.textContent = total + (total === 1 ? ' henkilö' : ' henkilöä');
     clear.hidden = search.value.length === 0;
@@ -168,26 +174,12 @@ if (form) {
   form.addEventListener('input', rememberDraft);
   function updateDirectContact() {
     const person = selectedPerson(), office = selectedOffice();
-    byId('direct-label').textContent = person ? 'Valitsemasi asiantuntija' : 'Toimiston yhteystiedot';
-    byId('direct-name').textContent = person?.name || (office ? 'Kontturi & Co · ' + office.name : 'Kontturi & Co');
-    byId('direct-role').textContent = person?.role || office?.hours || '';
-    byId('direct-role').hidden = !person && !office;
-    byId('direct-phone').textContent = person?.phone || office?.phone || offices[0].phone;
-    byId('direct-phone').href = 'tel:' + (person?.tel || office?.tel || offices[0].tel);
-    byId('direct-email').textContent = person?.email || site.email;
-    byId('direct-email').href = 'mailto:' + (person?.email || site.email);
-    byId('quick-phone').href = byId('direct-phone').href;
-    byId('quick-email').href = byId('direct-email').href;
+    // Enquiries go through the office, so the quick links never switch to a lawyer's own number.
+    byId('quick-phone').href = 'tel:' + (office?.tel || offices[0].tel);
+    byId('quick-email').href = 'mailto:' + site.email;
     byId('form-recipient').hidden = !person && !office;
     byId('form-recipient').textContent = 'Yhteydenotto: ' + [person?.name, office?.name].filter(Boolean).join(' · ');
-    const portrait = byId('direct-portrait');
-    portrait.hidden = !person?.image;
-    if (person?.image) portrait.src = 'assets/' + person.image + '.webp';
-    else portrait.removeAttribute('src');
     byId('routing-summary').textContent = [person?.name, office?.name].filter(Boolean).join(' · ') || 'Autamme löytämään sopivan asiantuntijan.';
-    const link = byId('direct-profile');
-    link.href = person?.slug ? person.slug + '.html' : 'asiantuntijat.html';
-    link.firstChild.textContent = person?.slug ? 'Tutustu asiantuntijaan ' : 'Asiantuntijoiden yhteystiedot ';
   }
   function writeSelection() {
     const url = new URL(location.href);

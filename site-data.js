@@ -155,6 +155,16 @@ export const people = [
     "tel": "+358400597759"
   },
   {
+    "id": "katri",
+    "name": "Katri Virtanen",
+    "role": "Lakimies",
+    "phone": "040 502 4758",
+    "email": "katri.virtanen@kontturi.fi",
+    "slug": "katri-virtanen",
+    "image": "katri-virtanen",
+    "tel": "+358405024758"
+  },
+  {
     "id": "heidi",
     "name": "Heidi Hämäläinen",
     "role": "Asianajosihteeri",

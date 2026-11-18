@@ -31,16 +31,6 @@ body[data-page] .site-footer.site-footer--simple{padding:0 0 24px}
   .site-footer--simple .footer-bottom>a{padding-right:0}
 }
 
-/* Practice pages: the lawyers named for each practice area */
-.practice-people{grid-template-columns:repeat(3,minmax(0,1fr))}
-@media(max-width:700px){
-  .practice-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 16px}
-  .practice-experts .section-heading>.text-link{margin-top:16px}
-}
-
-/* Palvelut: names on each practice row */
-.services-page .practice-row .practice-row-experts{margin-top:10px;color:var(--ink);font-weight:500}
-
 /* Hinnasto: price list, one row under another */
 .price-list{margin:36px 0 0;border-bottom:1px solid var(--line)}
 .price-row{display:flex;justify-content:space-between;align-items:baseline;gap:32px;padding:20px 0;border-top:1px solid var(--line)}
@@ -70,4 +60,53 @@ body[data-page] .site-footer.site-footer--simple{padding:0 0 24px}
 @media(max-width:640px){
   .booking-numbers ul{flex-direction:column;gap:10px}
   .booking-numbers li{padding:0;border-left:0}
+}
+
+/* ---- Second feedback round (Nettisivujen jatko.docx), November 2026 ---- */
+
+/* Asiantuntijat: lawyers and secretaries under their own headings */
+.directory-group-title{margin:0 0 32px;font-size:clamp(26px,2.6vw,34px);font-weight:500;letter-spacing:-.025em}
+.directory-grid+.directory-group-title{margin-top:60px}
+.directory-group-title[hidden]{display:none}
+
+/* Profiles: positions of trust beside education and background */
+.profile-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 56px;align-items:start}
+.profile-facts>div{min-width:0}
+.qualification-list--stacked>div{grid-template-columns:1fr;gap:2px}
+@media(max-width:1000px){
+  .profile-facts{grid-template-columns:1fr}
+}
+
+/* Practice pages: the lawyer in charge is named under the hero portrait */
+.service-hero-surface .service-person-caption span>.service-person-label{margin-bottom:8px;font-size:12px;line-height:1.5;letter-spacing:.1em;text-transform:uppercase;color:#8fc7ee}
+
+/* Practice pages: everyone named for the area, as smaller cards */
+.practice-people{grid-template-columns:repeat(5,minmax(0,1fr));gap:36px 22px}
+.practice-people .person-caption{min-height:0;padding-top:14px}
+.practice-people .person-caption h3{margin-bottom:4px;font-size:17px;letter-spacing:-.02em}
+.practice-people .person-role{font-size:13px}
+@media(max-width:1100px){
+  .practice-people{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media(max-width:860px){
+  .practice-people{grid-template-columns:repeat(3,minmax(0,1fr));gap:30px 18px}
+}
+@media(max-width:700px){
+  .practice-experts .section-heading>.text-link{margin-top:16px}
+}
+@media(max-width:560px){
+  .practice-people{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 16px}
+  .practice-people .person-caption h3{font-size:16px}
+}
+
+/* Contact page: "Mitä seuraavaksi?" now opens the left column */
+.contact-aside>.contact-next:first-child{margin-top:0;padding-top:0;border-top:0}
+
+/* Yhteistyössä: photograph beside the opening text */
+.connection-hero-split{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:clamp(32px,6vw,88px);align-items:center}
+.connection-hero-copy{min-width:0}
+.connection-photo{margin:0;min-width:0;position:relative;z-index:1}
+.connection-photo img{display:block;width:100%;height:auto;aspect-ratio:5/4;object-fit:cover}
+@media(max-width:900px){
+  .connection-hero-split{grid-template-columns:1fr;gap:32px}
 }

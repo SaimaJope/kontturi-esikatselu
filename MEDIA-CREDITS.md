@@ -21,3 +21,9 @@ Existing Kontturi logos and staff photographs retain their existing ownership.
 - Per-image article and media source URLs: `assets/news/sources.json`.
 - The images retain their original proportions. News lists use responsive thumbnails; individual articles show the corresponding original image.
 - Ownership remains with the original rights holders.
+
+## Photographs added in November 2026
+
+- `assets/yhteistyo-muistiinpanot-*.webp`: photograph supplied by Kontturi & Co by email (November 2026), resized for the opening of `yhteistyossa.html`.
+- `assets/katri-virtanen*.webp`: cropped from the portrait in `assets/news/news-katri-virtanen-lakimieheksi.jpg` for the staff directory and profile page.
+- Ownership remains with Kontturi & Co and the original photographers.
