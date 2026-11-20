@@ -167,7 +167,7 @@ export const people = [
   {
     "id": "heidi",
     "name": "Heidi Hämäläinen",
-    "role": "Asianajosihteeri",
+    "role": "Toimistopäällikkö",
     "phone": "013 120 731",
     "email": "asianajotoimisto@kontturi.fi",
     "slug": "heidi-hamalainen",

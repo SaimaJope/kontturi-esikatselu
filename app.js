@@ -1,4 +1,4 @@
-import { people, offices, site } from './site-data.js?v=20261118-1';
+import { people, offices, site } from './site-data.js?v=20261120-1';
 
 const backToTop = document.querySelector('.back-to-top');
 if (backToTop) {
@@ -162,51 +162,41 @@ if (serviceSearch) {
 }
 if (form) {
   const byId = id => document.getElementById(id);
-  const personSelect = byId('person'), topicSelect = byId('topic'), officeSelect = byId('office');
+  const topicSelect = byId('topic'), officeSelect = byId('office');
   const formView = byId('form-view'), receipt = byId('receipt-view'), errorSummary = byId('form-error-summary');
   const requiredIds = ['topic', 'message', 'name', 'email'];
-  const selectedPerson = () => people.find(person => person.id === personSelect.value);
   const selectedOffice = () => offices.find(office => office.id === officeSelect.value);
-  let previousSuggestedTopic = '';
   let draft = null;
   const draftFields = ['name', 'email', 'phone', 'message'];
   const rememberDraft = () => { draft = Object.fromEntries(draftFields.map(id => [id, byId(id).value])); };
   form.addEventListener('input', rememberDraft);
   function updateDirectContact() {
-    const person = selectedPerson(), office = selectedOffice();
-    // Enquiries go through the office, so the quick links never switch to a lawyer's own number.
+    const office = selectedOffice();
+    // All enquiries go to the office, which answers fastest and routes them to the right expert.
     byId('quick-phone').href = 'tel:' + (office?.tel || offices[0].tel);
     byId('quick-email').href = 'mailto:' + site.email;
-    byId('form-recipient').hidden = !person && !office;
-    byId('form-recipient').textContent = 'Yhteydenotto: ' + [person?.name, office?.name].filter(Boolean).join(' · ');
-    byId('routing-summary').textContent = [person?.name, office?.name].filter(Boolean).join(' · ') || 'Autamme löytämään sopivan asiantuntijan.';
+    byId('form-recipient').hidden = !office;
+    byId('form-recipient').textContent = office ? 'Yhteydenotto: ' + office.name : '';
   }
   function writeSelection() {
     const url = new URL(location.href);
     // Only public routing identifiers enter the URL, never form contents.
-    [['henkilo', personSelect.value], ['aihe', topicSelect.value], ['toimipaikka', officeSelect.value === 'any' ? '' : officeSelect.value]].forEach(([key, value]) => {
+    [['aihe', topicSelect.value], ['toimipaikka', officeSelect.value === 'any' ? '' : officeSelect.value]].forEach(([key, value]) => {
       if (value) url.searchParams.set(key, value); else url.searchParams.delete(key);
     });
     history.replaceState({ ...history.state, contactPreview: false }, '', url);
   }
   function readSelection() {
     const params = new URLSearchParams(location.search);
+    // Older links may still carry ?henkilo=; it only pre-fills the topic, the message still goes to the office.
     const person = people.find(person => person.id === params.get('henkilo'));
-    personSelect.value = person?.id || '';
     const topic = params.get('aihe') || person?.topic || '';
     topicSelect.value = [...topicSelect.options].some(option => option.value === topic) ? topic : '';
     officeSelect.value = offices.some(office => office.id === params.get('toimipaikka')) ? params.get('toimipaikka') : 'any';
-    previousSuggestedTopic = person?.topic || '';
     updateDirectContact();
   }
-  personSelect.addEventListener('change', () => {
-    const person = selectedPerson();
-    if (person?.topic && (!topicSelect.value || topicSelect.value === previousSuggestedTopic)) topicSelect.value = person.topic;
-    previousSuggestedTopic = person?.topic || '';
-    updateDirectContact(); writeSelection();
-  });
   officeSelect.addEventListener('change', () => { updateDirectContact(); writeSelection(); });
-  topicSelect.addEventListener('change', () => { previousSuggestedTopic = ''; writeSelection(); });
+  topicSelect.addEventListener('change', writeSelection);
   function validateField(id) {
     const input = byId(id);
     let message = '';
@@ -235,9 +225,8 @@ if (form) {
     });
   }
   function showReceipt(focus = false) {
-    byId('receipt-person').textContent = selectedPerson()?.name || 'Kontturi & Co';
     byId('receipt-topic').textContent = topicSelect.selectedOptions[0]?.textContent || 'Ei valintaa';
-    byId('receipt-office').textContent = selectedOffice()?.name || 'Mikä tahansa toimipaikka';
+    byId('receipt-office').textContent = selectedOffice()?.name || 'Ei toivetta';
     for (const id of ['name', 'email', 'message']) byId('receipt-' + id).textContent = byId(id).value.trim();
     formView.hidden = true; receipt.hidden = false;
     if (focus) byId('receipt-title').focus();
